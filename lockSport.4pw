@@ -65,7 +65,7 @@
   <LanguageList version="1.0"/>
   <PlatformList version="1.0"/>
   <Group id="674884836" label="Packages" language="Genero">
-    <Package binaryName="lockSport320" description="lockSport" id="-1919922032" label="lockSport320" platform="Genero Application Server">
+    <Package binaryName="lockSport320" dependencies="362164715,400358049,455109296" description="lockSport" id="-1919922032" label="lockSport320" platform="Genero Application Server">
       <DynamicProperty name="packageId" value="lockSport"/>
       <DynamicProperty name="packageLabel" value="lockSport"/>
       <Directory destinationDirectory="$(RootDir)/bin" excludedFiles="Test.42r" includedFiles="*.42?" label="Binaries" sourceDirectory="$(ProjectDir)/bin"/>

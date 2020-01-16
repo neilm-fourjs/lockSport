@@ -12,7 +12,7 @@ DEFINE m_save BOOLEAN = FALSE
 MAIN
 
 	CALL db.connect( "../database/locksport.db" )
-	CALL db.chk_db(2)
+	CALL db.chk_db(1)
 
 	CALL getData()
 
