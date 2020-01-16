@@ -65,6 +65,14 @@
   <LanguageList version="1.0"/>
   <PlatformList version="1.0"/>
   <Group id="674884836" label="Packages" language="Genero">
+    <Package binaryName="lockSport320" description="lockSport" id="-1919922032" label="lockSport320" platform="Genero Application Server">
+      <DynamicProperty name="packageId" value="lockSport"/>
+      <DynamicProperty name="packageLabel" value="lockSport"/>
+      <Directory destinationDirectory="$(RootDir)/bin" excludedFiles="Test.42r" includedFiles="*.42?" label="Binaries" sourceDirectory="$(ProjectDir)/bin"/>
+      <Directory label="Config" sourceDirectory="$(ProjectDir)/config"/>
+      <Directory destinationDirectory="$(RootDir)/database" includedFiles="*.db" label="Database" sourceDirectory="$(ProjectDir)/database"/>
+      <Directory includedFiles="*.png,*.jpg,*.ttf,image2font.txt" label="Images" sourceDirectory="$(ProjectDir)/images"/>
+    </Package>
     <Package binaryName="MyApp_Android" dependencies="400358049,781919164,159917928,212784684,715422167,362164715,313644474" description="Android Package" id="187810339" label="MyApp_Android" platform="Android">
       <DynamicProperty name="packageId" value="com.company.myapp"/>
       <DynamicProperty name="packageLabel" value="MyApp"/>
@@ -112,8 +120,8 @@
     <Application binaryName="lockSport" dependencies="159917928,212784684,362164715,455109296" environment="dirlist:FGLIMAGEPATH=$(ProjectDir)/images;$(FGLDIR)/lib/image2font.txt;$(ProjectDir);$(FGLIMAGEPATH)" id="400358049" label="lockSport">
       <File filePath="src/db.4gl"/>
       <File filePath="src/main.4gl"/>
-      <File filePath="../../../../../opt/fourjs/all/my_github/lockSport/config/pick.per"/>
-      <File filePath="config/pickhist.per"/>
+      <File filePath="../../../../../opt/fourjs/all/my_github/lockSport/src/pick.per"/>
+      <File filePath="../../../../../opt/fourjs/all/my_github/lockSport/src/pickhist.per"/>
       <File filePath="../../../../../opt/fourjs/all/my_github/lockSport/src/tools.per"/>
     </Application>
   </Group>

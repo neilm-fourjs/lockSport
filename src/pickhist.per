@@ -10,14 +10,14 @@ TABLE
 END -- TABLE
 
 ATTRIBUTES
-COMBOBOX a001 = FORMONLY.lock_code, INITIALIZER=cb_lock;
-COMBOBOX a002 = FORMONLY.pick_tool_code, INITIALIZER=cb_tool;
-COMBOBOX a003 = FORMONLY.tension_tool_code, INITIALIZER=cb_tool;
-COMBOBOX a004 = FORMONLY.tension_method, ITEMS=(("T","TOK"),("B","BOK")) ;
-a005 = FORMONLY.date_picked;
-a006 = FORMONLY.time_picked;
-a007 = FORMONLY.duration;
-a008 = FORMONLY.notes;
+COMBOBOX a001 = FORMONLY.lock_code, INITIALIZER=cb_lock, TITLE=%"Lock";
+COMBOBOX a002 = FORMONLY.pick_tool_code, INITIALIZER=cb_tool, TITLE=%"Pick";
+COMBOBOX a003 = FORMONLY.tension_tool_code, INITIALIZER=cb_tool, TITLE=%"Tensioner";
+COMBOBOX a004 = FORMONLY.tension_method, ITEMS=(("T","TOK"),("B","BOK")), TITLE=%"Tension" ;
+a005 = FORMONLY.date_picked, TITLE=%"Date";
+a006 = FORMONLY.time_picked, TITLE=%"Time";
+a007 = FORMONLY.duration, TITLE=%"Duration";
+a008 = FORMONLY.notes, TITLE=%"Notes";
 
 INSTRUCTIONS
 SCREEN RECORD pickhist ( FORMONLY.lock_code  THRU FORMONLY.notes )

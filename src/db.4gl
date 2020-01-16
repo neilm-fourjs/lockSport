@@ -44,7 +44,7 @@ FUNCTION cre_db()
 		date_picked DATE,
 		time_picked DATETIME HOUR TO SECOND,
 		duration DATETIME HOUR TO SECOND,
-		notes TEXT
+		notes VARCHAR(256)
 	)
 
 	DISPLAY "Create table dbver ..."

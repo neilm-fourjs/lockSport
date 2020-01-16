@@ -7,7 +7,7 @@ DEFINE m_manus DYNAMIC ARRAY OF RECORD LIKE manus.*
 DEFINE m_locks DYNAMIC ARRAY OF RECORD LIKE locks.*
 DEFINE m_pickTools DYNAMIC ARRAY OF RECORD LIKE tools.*
 DEFINE m_tensionTools DYNAMIC ARRAY OF RECORD LIKE tools.*
-
+DEFINE m_save BOOLEAN = FALSE
 MAIN
 
 	CALL db.connect( "../database/locksport.db" )
@@ -30,6 +30,10 @@ MAIN
 		ON ACTION close EXIT MENU
 		ON ACTION quit EXIT MENU
 	END MENU
+
+	IF m_save THEN
+		UNLOAD TO "../database/pick_hist.unl" SELECT * FROM pick_hist
+	END IF
 END MAIN
 --------------------------------------------------------------------------------------------------------------
 FUNCTION show_tools()
@@ -139,7 +143,7 @@ FUNCTION pick()
 	LET l_pick.date_picked = TODAY
 	LET l_pick.time_picked = TIME
 	LET l_pick.tension_method = "B"
-	LOCATE l_pick.notes IN MEMORY
+
 	LET int_flag = FALSE
 	INPUT BY NAME l_pick.*, end_time ATTRIBUTES( UNBUFFERED, WITHOUT DEFAULTS )
 		ON ACTION now INFIELD time_picked
@@ -157,6 +161,7 @@ FUNCTION pick()
 	IF NOT int_flag THEN
 		TRY
 			INSERT INTO pick_hist VALUES( l_pick.* )
+			LET m_save = TRUE
 		CATCH
 			ERROR SQLERRMESSAGE
 		END TRY
@@ -177,10 +182,8 @@ FUNCTION pick_history()
 	DEFINE l_pickhist DYNAMIC ARRAY OF RECORD LIKE pick_hist.*
 	DEFINE l_row SMALLINT = 0
 	DECLARE c_pickhist CURSOR FOR SELECT * FROM pick_hist
-	LOCATE l_pick.notes IN MEMORY
 	FOREACH c_pickhist INTO l_pick.*
 		LET l_row = l_row + 1
-		LOCATE l_pickhist[ l_row ].notes IN MEMORY
 		LET l_pickhist[ l_row ].* = l_pick.*
 	END FOREACH
 	OPEN WINDOW pickhist WITH FORM "pickhist"
