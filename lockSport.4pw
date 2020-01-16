@@ -100,15 +100,21 @@
     </Package>
   </Group>
   <Group environment="filelist:FGLPROFILE=$(ProjectDir)/config/fglprofile,dirlist:DBPATH=$(ProjectDir)/database;$(DBPATH)" id="10414220" label="Project" language="Genero">
-    <Application binaryName="Application" dependencies="159917928,212784684,362164715,455109296" environment="dirlist:FGLIMAGEPATH=$(ProjectDir)/images;$(FGLDIR)/lib/image2font.txt;$(ProjectDir);$(FGLIMAGEPATH)" id="400358049" label="Application">
+    <Library binaryName="Config" id="362164715" label="Config">
+      <File filePath="config/default.4ad"/>
+      <File filePath="config/default.4st"/>
+      <File filePath="config/fglprofile"/>
+      <File filePath="../../../../../opt/fourjs/all/my_github/lockSport/config/lockSport.xcf"/>
+    </Library>
+    <Library binaryName="Database" id="455109296" label="Database">
+      <File filePath="../../../../../opt/fourjs/all/my_github/lockSport/database/locksport.4db"/>
+    </Library>
+    <Application binaryName="lockSport" dependencies="159917928,212784684,362164715,455109296" environment="dirlist:FGLIMAGEPATH=$(ProjectDir)/images;$(FGLDIR)/lib/image2font.txt;$(ProjectDir);$(FGLIMAGEPATH)" id="400358049" label="lockSport">
       <File filePath="src/db.4gl"/>
       <File filePath="src/main.4gl"/>
+      <File filePath="../../../../../opt/fourjs/all/my_github/lockSport/config/pick.per"/>
+      <File filePath="config/pickhist.per"/>
+      <File filePath="../../../../../opt/fourjs/all/my_github/lockSport/src/tools.per"/>
     </Application>
-    <Library binaryName="Config" id="362164715" label="Config">
-      <File filePath="resources/default.4ad"/>
-      <File filePath="resources/default.4st"/>
-      <File filePath="config/fglprofile"/>
-    </Library>
-    <Library binaryName="Database" id="455109296" label="Database"/>
   </Group>
 </Project>

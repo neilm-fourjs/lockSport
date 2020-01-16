@@ -1,0 +1,35 @@
+
+LAYOUT ( TEXT="Pick Tools" )
+HBOX
+TABLE
+{
+[a00|a001      |a002          |a003      |a004               |a005  |b]
+[a00|a001      |a002          |a003      |a004               |a005  |b]
+[a00|a001      |a002          |a003      |a004               |a005  |b]
+[a00|a001      |a002          |a003      |a004               |a005  |b]
+[a00|a001      |a002          |a003      |a004               |a005  |b]
+[a00|a001      |a002          |a003      |a004               |a005  |b]
+}
+END -- TABLE
+GRID
+{
+[img      ]
+[         ]
+[         ]
+}
+END -- GRID
+END -- VB
+
+ATTRIBUTES
+a00 = FORMONLY.code;
+COMBOBOX a001 = FORMONLY.manu, TITLE="Manu", INITIALIZER=cb_toolmanu;
+a002 = FORMONLY.set_name, TITLE="Set";
+COMBOBOX a003 = FORMONLY.tool_type, TITLE="Type", ITEMS=(("H","Hook"),("R","Rake"),("T","Tensioner"),("D","Diamond"));
+a004 = FORMONLY.tool_name, TITLE="Name";
+a005 = FORMONLY.tool_width, TITLE="Width";
+CHECKBOX b = FORMONLY.broken, TITLE="Broken",VALUECHECKED=1, VALUEUNCHECKED=0;
+
+IMAGE img = FORMONLY.img, AUTOSCALE;
+
+INSTRUCTIONS
+SCREEN RECORD tools ( FORMONLY.code THRU FORMONLY.broken )

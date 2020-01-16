@@ -1,0 +1,39 @@
+
+LAYOUT (TEXT="Pick")
+GRID
+{
+[l001|f001                       ]
+[l002|f002                       ]
+[l003|f003                       ]
+[l004|f004]
+[l005|f005      ]
+[l006|f006    ]
+[l007|f007    ]
+[l008|f008    ]
+[l009]
+[f009                          ]
+[                              ]
+[                              ]
+}
+END -- GRID
+
+ATTRIBUTES
+LABEL l001 : lab1, TEXT=%"Lock:", JUSTIFY=RIGHT;
+LABEL l002 : lab2, TEXT=%"Pick:", JUSTIFY=RIGHT;
+LABEL l003 : lab3, TEXT=%"Tensioner:", JUSTIFY=RIGHT;
+LABEL l004 : lab4, TEXT=%"Tension:", JUSTIFY=RIGHT;
+LABEL l005 : lab5, TEXT=%"Date:", JUSTIFY=RIGHT;
+LABEL l006 : lab6, TEXT=%"Start:", JUSTIFY=RIGHT;
+LABEL l007 : lab7, TEXT=%"Finished:", JUSTIFY=RIGHT;
+LABEL l008 : lab8, TEXT=%"Duration:", JUSTIFY=RIGHT;
+LABEL l009 : lab9, TEXT=%"Notes:";
+
+COMBOBOX f001 = FORMONLY.lock_code, INITIALIZER=cb_lock, NOT NULL;
+COMBOBOX f002 = FORMONLY.pick_tool_code, INITIALIZER=cb_tool, NOT NULL;
+COMBOBOX f003 = FORMONLY.tension_tool_code, INITIALIZER=cb_tool, NOT NULL;
+COMBOBOX f004 = FORMONLY.tension_method, ITEMS=(("T","TOK"),("B","BOK")), NOT NULL;
+DATEEDIT f005 = FORMONLY.date_picked, NOT NULL;
+BUTTONEDIT f006 = FORMONLY.time_picked, ACTION=now, STYLE="big", NOT NULL;
+BUTTONEDIT f007 = FORMONLY.end_time, ACTION=now, STYLE="big", NOT NULL;
+BUTTONEDIT f008 = FORMONLY.duration, ACTION=calc, STYLE="big", NOT NULL;
+TEXTEDIT f009 = FORMONLY.notes;

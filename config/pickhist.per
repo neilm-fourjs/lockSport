@@ -1,0 +1,23 @@
+LAYOUT (TEXT="Pick History")
+TABLE
+{
+[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a008            ]
+[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a008            ]
+[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a008            ]
+[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a008            ]
+[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a008            ]
+}
+END -- TABLE
+
+ATTRIBUTES
+COMBOBOX a001 = FORMONLY.lock_code, INITIALIZER=cb_lock;
+COMBOBOX a002 = FORMONLY.pick_tool_code, INITIALIZER=cb_tool;
+COMBOBOX a003 = FORMONLY.tension_tool_code, INITIALIZER=cb_tool;
+COMBOBOX a004 = FORMONLY.tension_method, ITEMS=(("T","TOK"),("B","BOK")) ;
+a005 = FORMONLY.date_picked;
+a006 = FORMONLY.time_picked;
+a007 = FORMONLY.duration;
+a008 = FORMONLY.notes;
+
+INSTRUCTIONS
+SCREEN RECORD pickhist ( FORMONLY.lock_code  THRU FORMONLY.notes )

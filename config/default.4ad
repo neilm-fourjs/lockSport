@@ -31,5 +31,7 @@
   <ActionDefault name="prevtab" text="Previous Folder Tab" acceleratorName="Control-Shift-Tab" contextMenu="no"/>
   <ActionDefault name="dialogtouched" validate="no" defaultView="no"  contextMenu="no"/>
 
+  <ActionDefault name="now" validate="no" text="Now" image="fa-clock-o" acceleratorName="enter" contextMenu="no"/>
+  <ActionDefault name="calc" validate="no" text="Calc" image="fa-calculator" acceleratorName="+" contextMenu="no"/>
   <ActionDefault name="quit" validate="no" text="Quit" acceleratorName="Escape" contextMenu="no"/>
 </ActionDefaultList>
