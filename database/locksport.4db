@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Schema gstVersion="31408" id="{4c77bc70-96f3-49f5-b9f0-40cbdf20cff1}" version="4.0">
+  <AGSettings version="1.1">
+    <DynamicProperties version="2">
+      <DynamicProperty description="Associated label when generating form" initialValue="" isDefaultInherited="false" isHidden="false" label="Label" name="label" readOnly="false" type="TEXT"/>
+      <DynamicProperty description="Associated widget" editorInfo="contains:ButtonEdit|CheckBox|ComboBox|DateEdit|DateTimeEdit|Edit|FFImage|FFLabel|Field|Phantom|ProgressBar|RadioGroup|Slider|SpinEdit|TextEdit|TimeEdit" initialValue="Edit" isDefaultInherited="false" isHidden="false" label="Widget" name="widget" readOnly="false" type="ENUM"/>
+      <DynamicPropertyGroup collapsed="false" description="Formfied properties" label="Formfield" name="formfieldGroup" properties="label;widget"/>
+    </DynamicProperties>
+    <NodeInfos version="1">
+      <NodeInfo mimeType="db/column" properties="widget;label"/>
+    </NodeInfos>
+  </AGSettings>
+  <ExtractionSettings last="SQLite">
+    <ExtractionOptions casens="LowerCase" cvmeth="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" ignerr="true" systab="false" type="SQLite"/>
+  </ExtractionSettings>
+  <Table active="true" name="dbver" status="U" uuid="db/table2">
+    <Column fglLength="2" fglType="1" name="dbver" notNull="false" order="1" status="U" uuid="db/column2"/>
+  </Table>
+  <Table active="true" name="locks" status="U" uuid="db/table6">
+    <Column fglLength="4" fglType="6" name="lock_code" notNull="false" order="1" status="U" uuid="db/column8"/>
+    <Column fglLength="2" fglType="0" name="manu_code" notNull="false" order="2" status="U" uuid="db/column10"/>
+    <Column fglLength="1" fglType="0" name="lock_type" notNull="false" order="3" status="U" uuid="db/column12"/>
+    <Column fglLength="40" fglType="201" name="lock_name" notNull="false" order="4" status="U" uuid="db/column14"/>
+    <Column fglLength="1" fglType="45" name="picked" notNull="false" order="5" status="U" uuid="db/column16"/>
+    <Column fglLength="2" fglType="1" name="pins" notNull="false" order="6" status="U" uuid="db/column18"/>
+    <Column fglLength="20" fglType="201" name="pintypes" notNull="false" order="7" status="U" uuid="db/column20"/>
+    <Column fglLength="20" fglType="201" name="binding" notNull="false" order="8" status="U" uuid="db/column22"/>
+    <Column fglLength="20" fglType="201" name="pick_meth" notNull="false" order="9" status="U" uuid="db/column24"/>
+    <Column fglLength="1283" fglType="5" name="max_pickwidth" notNull="false" order="10" status="U" uuid="db/column26"/>
+    <Column fglLength="20" fglType="201" name="tool_type" notNull="false" order="11" status="U" uuid="db/column28"/>
+    <Column fglLength="20" fglType="201" name="tensioning" notNull="false" order="12" status="U" uuid="db/column30"/>
+    <Column fglLength="1642" fglType="10" name="fasted_pick" notNull="false" order="13" status="U" uuid="db/column32"/>
+    <Index indexColumns="lock_code" indexConstraint="primaryKey" name="primary_key_locks" status="U" uuid="db/index2"/>
+  </Table>
+  <Table active="true" name="manus" status="U" uuid="db/table8">
+    <Column fglLength="2" fglType="0" name="manu_code" notNull="false" order="1" status="U" uuid="db/column38"/>
+    <Column fglLength="1" fglType="0" name="manu_type" notNull="false" order="2" status="U" uuid="db/column40"/>
+    <Column fglLength="60" fglType="201" name="manu_name" notNull="false" order="3" status="U" uuid="db/column42"/>
+  </Table>
+  <Table active="true" name="pick_hist" status="U" uuid="db/table7">
+    <Column fglLength="4" fglType="2" name="lock_code" notNull="false" order="1" status="U" uuid="db/column33"/>
+    <Column fglLength="4" fglType="2" name="pick_tool_code" notNull="false" order="2" status="U" uuid="db/column35"/>
+    <Column fglLength="4" fglType="2" name="tension_tool_code" notNull="false" order="3" status="U" uuid="db/column37"/>
+    <Column fglLength="1" fglType="0" name="tension_method" notNull="false" order="4" status="U" uuid="db/column39"/>
+    <Column fglLength="4" fglType="7" name="date_picked" notNull="false" order="5" status="U" uuid="db/column41"/>
+    <Column fglLength="1642" fglType="10" name="time_picked" notNull="false" order="6" status="U" uuid="db/column43"/>
+    <Column fglLength="1642" fglType="10" name="duration" notNull="false" order="7" status="U" uuid="db/column45"/>
+    <Column fglLength="56" fglType="12" name="notes" notNull="false" order="8" status="U" uuid="db/column36"/>
+  </Table>
+  <Table active="true" name="tools" status="U" uuid="db/table12">
+    <Column fglLength="4" fglType="6" name="tool_code" notNull="false" order="1" status="U" uuid="db/column52"/>
+    <Column fglLength="2" fglType="0" name="manu_code" notNull="false" order="2" status="U" uuid="db/column54"/>
+    <Column fglLength="40" fglType="201" name="set_name" notNull="false" order="3" status="U" uuid="db/column56"/>
+    <Column fglLength="1" fglType="0" name="tool_type" notNull="false" order="4" status="U" uuid="db/column58"/>
+    <Column fglLength="40" fglType="201" name="tool_name" notNull="false" order="5" status="U" uuid="db/column60"/>
+    <Column fglLength="1283" fglType="5" name="tool_width" notNull="false" order="6" status="U" uuid="db/column62"/>
+    <Column fglLength="1" fglType="45" name="broken" notNull="false" order="7" status="U" uuid="db/column34"/>
+    <Index indexColumns="tool_code" indexConstraint="primaryKey" name="primary_key_tools" status="U" uuid="db/index4"/>
+  </Table>
+  <Views ActiveView="View-1" showLabels="true">
+    <View Name="View-1">
+      <Layout>
+        <![CDATA[AAAAAgAAABIAZABiAC8AdABhAGIAbABlADIAAAAAAAAAAEAy0tLXh4eIAAAAAAAAAAABAAAAFABkAGIALwB0AGEAYgBsAGUAMQAyQH4PDxbfDw9ARLS0uelpaj+Yk3S8an7+AQAAABIAZABiAC8AdABhAGIAbABlADdAe2lpa1PDxEBzh4eJMeHiP6Jul41P3z8BAAAAEgBkAGIALwB0AGEAYgBsAGUANj/+Hh4/Dw8RQGMtLTP2lpc/o3S8an753wEAAAASAGQAYgAvAHQAYQBiAGwAZQA4AAAAAAAAAAAAAAAAAAAAAD+gYk3S8an/AQ==]]>
+      </Layout>
+    </View>
+  </Views>
+</Schema>
