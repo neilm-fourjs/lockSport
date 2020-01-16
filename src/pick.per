@@ -1,21 +1,42 @@
 
-LAYOUT (TEXT="Pick")
+LAYOUT (TEXT="lockSport")
+VBOX
+TABLE
+{
+[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a008            ]
+[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a008            ]
+[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a008            ]
+[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a008            ]
+[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a008            ]
+}
+END -- TABLE
+HBOX
 GRID
 {
 [l001|f001                       ]
 [l002|f002                       ]
 [l003|f003                       ]
 [l004|f004]
-[l005|f005      ]
-[l006|f006    ]
-[l007|f007    ]
-[l008|f008    ]
-[l009]
-[f009                          ]
-[                              ]
-[                              ]
 }
 END -- GRID
+GRID
+{
+[l005|f005      ]
+[l006|f006    ]  
+[l007|f007    ]  
+[l008|f008    ]  
+}
+END -- GRID
+GRID
+{
+[l009]
+[f009                                             ]
+[                                                 ]
+[                                                 ]
+}
+END -- GRID
+END -- HBOX
+END -- VBOX
 
 ATTRIBUTES
 LABEL l001 : lab1, TEXT=%"Lock:", JUSTIFY=RIGHT;
@@ -28,8 +49,8 @@ LABEL l007 : lab7, TEXT=%"Finished:", JUSTIFY=RIGHT;
 LABEL l008 : lab8, TEXT=%"Duration:", JUSTIFY=RIGHT;
 LABEL l009 : lab9, TEXT=%"Notes:";
 
-COMBOBOX f001 = FORMONLY.lock_code, INITIALIZER=cb_lock, NOT NULL;
-COMBOBOX f002 = FORMONLY.pick_tool_code, INITIALIZER=cb_tool, NOT NULL;
+COMBOBOX f001 = FORMONLY.lock_code, INITIALIZER=cb_lock, STYLE="big", NOT NULL;
+COMBOBOX f002 = FORMONLY.pick_tool_code, INITIALIZER=cb_tool, STYLE="big", NOT NULL;
 COMBOBOX f003 = FORMONLY.tension_tool_code, INITIALIZER=cb_tool, NOT NULL;
 COMBOBOX f004 = FORMONLY.tension_method, ITEMS=(("T","TOK"),("B","BOK")), NOT NULL;
 DATEEDIT f005 = FORMONLY.date_picked, NOT NULL;
@@ -37,3 +58,15 @@ BUTTONEDIT f006 = FORMONLY.time_picked, ACTION=now, STYLE="big", NOT NULL;
 BUTTONEDIT f007 = FORMONLY.end_time, ACTION=now, STYLE="big", NOT NULL;
 BUTTONEDIT f008 = FORMONLY.duration, ACTION=calc, STYLE="big", NOT NULL;
 TEXTEDIT f009 = FORMONLY.notes;
+
+COMBOBOX a001 = FORMONLY.alock_code, INITIALIZER=cb_lock, TITLE=%"Lock";
+COMBOBOX a002 = FORMONLY.apick_tool_code, INITIALIZER=cb_tool, TITLE=%"Pick";
+COMBOBOX a003 = FORMONLY.atension_tool_code, INITIALIZER=cb_tool, TITLE=%"Tensioner";
+COMBOBOX a004 = FORMONLY.atension_method, ITEMS=(("T","TOK"),("B","BOK")), TITLE=%"Tension" ;
+a005 = FORMONLY.adate_picked, TITLE=%"Date";
+a006 = FORMONLY.atime_picked, TITLE=%"Time";
+a007 = FORMONLY.aduration, TITLE=%"Duration";
+a008 = FORMONLY.anotes, TITLE=%"Notes";
+
+INSTRUCTIONS
+SCREEN RECORD pickhist ( FORMONLY.alock_code  THRU FORMONLY.anotes )

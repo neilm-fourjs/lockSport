@@ -4,6 +4,7 @@
 	xsi:noNamespaceSchemaLocation="http://www.4js.com/ns/gas/3.10/cfextwa.xsd">
 	<EXECUTION>
 		<ENVIRONMENT_VARIABLE Id="FGLRESOURCEPATH">..</ENVIRONMENT_VARIABLE>
+		<ENVIRONMENT_VARIABLE Id="FGLPROFILE">../fglprofile</ENVIRONMENT_VARIABLE>
 		<ENVIRONMENT_VARIABLE Id="FGLIMAGEPATH">../pics:../pics/fa5.txt</ENVIRONMENT_VARIABLE>
 		<PATH>$(res.deployment.path)/bin</PATH>
 		<MODULE>lockSport.42r</MODULE>

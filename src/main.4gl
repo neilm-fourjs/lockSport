@@ -7,6 +7,7 @@ DEFINE m_manus DYNAMIC ARRAY OF RECORD LIKE manus.*
 DEFINE m_locks DYNAMIC ARRAY OF RECORD LIKE locks.*
 DEFINE m_pickTools DYNAMIC ARRAY OF RECORD LIKE tools.*
 DEFINE m_tensionTools DYNAMIC ARRAY OF RECORD LIKE tools.*
+DEFINE m_pickhist DYNAMIC ARRAY OF RECORD LIKE pick_hist.*
 DEFINE m_save BOOLEAN = FALSE
 MAIN
 
@@ -18,19 +19,23 @@ MAIN
 	OPEN FORM p FROM "pick"
 	DISPLAY FORM p
 
-	MENU
+	CALL pick_history()
+	DIALOG ATTRIBUTES(UNBUFFERED)
+		DISPLAY ARRAY m_pickhist TO pickhist.*
+			BEFORE ROW
+				DISPLAY BY NAME m_pickhist[ arr_curr() ].*
+		END DISPLAY
 		COMMAND "Show Tools"
 			CALL show_tools()
 		COMMAND "Show Locks"
 			CALL show_locks()
 		COMMAND "Pick"
 			CALL pick()
-		COMMAND "Pick History"
-			CALL pick_history()
-		ON ACTION close EXIT MENU
-		ON ACTION quit EXIT MENU
-	END MENU
 
+		ON ACTION close EXIT DIALOG
+		ON ACTION quit EXIT DIALOG
+
+	END DIALOG
 	IF m_save THEN
 		UNLOAD TO "../database/pick_hist.unl" SELECT * FROM pick_hist
 	END IF
@@ -111,7 +116,7 @@ END FUNCTION
 FUNCTION cb_tool( l_cb ui.ComboBox )
 	DEFINE l_row SMALLINT = 1
 	DEFINE l_tool STRING
-	IF l_cb.getColumnName() = "pick_tool_code" THEN
+	IF l_cb.getColumnName() = "pick_tool_code" OR l_cb.getColumnName() = "apick_tool_code" THEN
 		FOR l_row = 1 TO m_pickTools.getLength()
 			IF NOT m_pickTools[ l_row ].broken THEN
 				LET l_tool =  SFMT("%1  %2  %3",
@@ -165,6 +170,7 @@ FUNCTION pick()
 		CATCH
 			ERROR SQLERRMESSAGE
 		END TRY
+		CALL pick_history()
 	END IF
 
 END FUNCTION
@@ -179,15 +185,12 @@ END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION pick_history()
 	DEFINE l_pick RECORD LIKE pick_hist.*
-	DEFINE l_pickhist DYNAMIC ARRAY OF RECORD LIKE pick_hist.*
 	DEFINE l_row SMALLINT = 0
+	CALL m_pickhist.clear()
 	DECLARE c_pickhist CURSOR FOR SELECT * FROM pick_hist
 	FOREACH c_pickhist INTO l_pick.*
 		LET l_row = l_row + 1
-		LET l_pickhist[ l_row ].* = l_pick.*
+		LET m_pickhist[ l_row ].* = l_pick.*
 	END FOREACH
-	OPEN WINDOW pickhist WITH FORM "pickhist"
-	DISPLAY ARRAY l_pickhist TO pickhist.*
-	CLOSE WINDOW pickhist
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
