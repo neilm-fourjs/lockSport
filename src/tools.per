@@ -21,15 +21,16 @@ END -- GRID
 END -- VB
 
 ATTRIBUTES
-a00 = FORMONLY.code;
+a00 = FORMONLY.lock_code;
 COMBOBOX a001 = FORMONLY.manu, TITLE="Manu", INITIALIZER=cb_toolmanu;
 a002 = FORMONLY.set_name, TITLE="Set";
 COMBOBOX a003 = FORMONLY.tool_type, TITLE="Type", ITEMS=(("H","Hook"),("R","Rake"),("T","Tensioner"),("D","Diamond"));
 a004 = FORMONLY.tool_name, TITLE="Name";
 a005 = FORMONLY.tool_width, TITLE="Width";
+PHANTOM FORMONLY.tool_img;
 CHECKBOX b = FORMONLY.broken, TITLE="Broken",VALUECHECKED=1, VALUEUNCHECKED=0;
 
 IMAGE img = FORMONLY.img, AUTOSCALE;
 
 INSTRUCTIONS
-SCREEN RECORD tools ( FORMONLY.code THRU FORMONLY.broken )
+SCREEN RECORD tools ( FORMONLY.lock_code THRU FORMONLY.broken )

@@ -12,7 +12,7 @@ DEFINE m_save BOOLEAN = FALSE
 MAIN
 
 	CALL db.connect( "../database/locksport.db" )
-	CALL db.chk_db(1)
+	CALL db.chk_db(2)
 
 	CALL getData()
 
@@ -40,22 +40,6 @@ MAIN
 		UNLOAD TO "../database/pick_hist.unl" SELECT * FROM pick_hist
 	END IF
 END MAIN
---------------------------------------------------------------------------------------------------------------
-FUNCTION show_tools()
-	DEFINE l_tools DYNAMIC ARRAY OF RECORD LIKE tools.*
-	DEFINE l_row SMALLINT = 1
-	DECLARE c_tools CURSOR FOR SELECT * FROM tools
-	FOREACH c_tools INTO l_tools[ l_row ].*
-		LET l_row = l_row + 1
-	END FOREACH
-	CALL l_tools.deleteElement( l_tools.getLength() )
-	OPEN WINDOW tools WITH FORM "tools"
-	DISPLAY ARRAY l_tools TO tools.*
-		BEFORE ROW
-			DISPLAY "../pics/"||l_tools[ arr_curr() ].tool_code||".jpg" TO img
-	END DISPLAY
-	CLOSE WINDOW tools
-END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION getData()
 	DEFINE l_manu RECORD LIKE manus.*
@@ -106,6 +90,15 @@ FUNCTION cb_toolmanu( l_cb ui.ComboBox )
 	END FOR
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
+FUNCTION cb_lockmanu( l_cb ui.ComboBox )
+	DEFINE l_row SMALLINT = 1
+	FOR l_row = 1 TO m_manus.getLength()
+		IF m_manus[ l_row ].manu_type = "L" THEN
+			CALL l_cb.addItem( m_manus[ l_row ].manu_code ,  m_manus[ l_row ].manu_name )
+		END IF
+	END FOR
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
 FUNCTION cb_lock( l_cb ui.ComboBox )
 	DEFINE l_row SMALLINT = 1
 	FOR l_row = 1 TO m_locks.getLength()
@@ -136,9 +129,6 @@ FUNCTION cb_tool( l_cb ui.ComboBox )
 			END IF
 		END FOR
 	END IF
-END FUNCTION
---------------------------------------------------------------------------------------------------------------
-FUNCTION show_locks()
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION pick()
@@ -194,3 +184,27 @@ FUNCTION pick_history()
 	END FOREACH
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
+FUNCTION show_locks()
+	OPEN WINDOW locks WITH FORM "locks"
+	DISPLAY ARRAY m_locks TO locks.*
+		BEFORE ROW
+			DISPLAY "../pics/"||m_locks[ arr_curr() ].lock_img||".jpg" TO img
+	END DISPLAY
+	CLOSE WINDOW locks
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+FUNCTION show_tools()
+	DEFINE l_tools DYNAMIC ARRAY OF RECORD LIKE tools.*
+	DEFINE l_row SMALLINT = 1
+	DECLARE c_tools CURSOR FOR SELECT * FROM tools
+	FOREACH c_tools INTO l_tools[ l_row ].*
+		LET l_row = l_row + 1
+	END FOREACH
+	CALL l_tools.deleteElement( l_tools.getLength() )
+	OPEN WINDOW tools WITH FORM "tools"
+	DISPLAY ARRAY l_tools TO tools.*
+		BEFORE ROW
+			DISPLAY "../pics/"||l_tools[ arr_curr() ].tool_img||".jpg" TO img
+	END DISPLAY
+	CLOSE WINDOW tools
+END FUNCTION

@@ -1,17 +1,22 @@
-ML|P|No 130|1|4|ssss||SSP|0.015|Short Hook|BOK||
-ST|P|BPL042L|1|5|sssss||Rake|0.015|City Rake|BOK||
-MX|P|MX8|1|4|ssss||Rake  / SSP|0.015|City Rake|BOK||
-ML|P|9140BLK|1|4|ssss|4321|SSP|0.02|Short Hook|BOK||
-ML|P|No 3|1|4|ssss|4321|SSP||Short Hook|TOK/BOK||
-ST|P|WPL148|1|4|ssss|1243|SSP|0.015|Short Hook|BOK||
-YL|C|P1109 Rim Cylinder|1|5|$SsSs||SSP|0.02|Short Hook|TOK||
-ML|P|No 140|1|4|ssss|4321|SSP|0.02|Short Hook|BOK light||
-ML|P|Safety 410|1|6|$SSSSS||SSP|0.015|Short Hook|||
-AB|P|80TI/50|1|6|||SSP|0.02|Short Hook|TOK||
-AB|P|64TI/50|1|5|sssss||SSP|0.02|Short Hook|TOK||
-AB|P|64TI/40|0|5|sssss||SSP|0.015|Short Hook|||
-AB|P|64TI/40|0|5|sssss||SSP|0.015|Short Hook|||
-ML|P|No 150|1|5|sssss||SSP|0.02|Short Hook|TOK/BOK||
-ML|P|No 150|1|5|sssss||SSP|0.02|Short Hook|TOK/BOK||
-WK|P|Wilko 40mm|1|4|ssss||SSP|0.02|Short Hook/Snake Rake|BOK||
-WK|P|Wilko 40mm|1|4|ssss||SSP|0.02|Short Hook|BOK||
+ML|No 130|P|ml_130|1|4|ssss||P|0.015|Short Hook|BOK||
+ST|BPL042L|P|st_bpl042l|1|5|sssss||R|0.015|City Rake|BOK||
+MX|MX8|P|mx_8|1|4|ssss||E|0.015|City Rake|BOK||
+ML|9140BLK|P|ml_9140blk|1|4|ssss|4321|P|0.02|Short Hook|BOK||
+ML|No 3|P|ml_3|1|4|ssss|4321|P||Short Hook|TOK/BOK||
+ST|WPL148|P|st_wpl148|1|4|ssss|1243|P|0.015|Short Hook|BOK||
+YL|P1109 Rim Cylinder|C|yl_p1109|1|5|$SsSs||P|0.02|Short Hook|TOK||
+ML|No 140|P|ml_140|1|4|ssss|4321|P|0.02|Short Hook|BOK light||
+ML|Safety 410|P|ml_410|1|6|$SSSSS||P|0.015|Short Hook|||
+AB|80TI/50|P|ab_80ti50|1|6|||P|0.02|Short Hook|TOK||
+AB|64TI/50|P|ab_64ti50|1|5|sssss||P|0.02|Short Hook|TOK||
+AB|64TI/40|P|ab_64ti40|0|5|sssss||P|0.015|Short Hook|||
+AB|64TI/40|P|ab_64ti40|0|5|sssss||P|0.015|Short Hook|||
+ML|No 150|P|ml_150|1|5|sssss||P|0.02|Short Hook|TOK/BOK||
+ML|No 150|P|ml_150|1|5|sssss||P|0.02|Short Hook|TOK/BOK||
+WK|Wilko 40mm|P|wk_40|1|4|ssss||E|0.02|Short Hook/Snake Rake|BOK||
+WK|Wilko 40mm|P|wk_40|1|4|ssss||P|0.02|Short Hook|BOK||
+SP|Cut Away|T|sp_cutaway|1|6|||P|0.02|Short Hook|TOK/BOK||
+SP|Revolver1|T|sp_revolver1|1|6|||P|0.02|Short Hook|TOK/BOK||
+SP|Revolver2|T|sp_revolver2|1|6|||P|0.02|Short Hook|TOK/BOK||
+SP|Revolver3|T|sp_revolver3|1|6|||P|0.02|Short Hook|TOK/BOK||
+SP|Revolver4|T|sp_revolver4|1|6|||P|0.02|Short Hook|TOK/BOK||

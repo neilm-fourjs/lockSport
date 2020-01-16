@@ -1,3 +1,5 @@
+IMPORT os
+
 DEFINE m_dbver STRING
 
 FUNCTION connect(l_nam STRING)
@@ -46,6 +48,10 @@ FUNCTION cre_db()
 		duration DATETIME HOUR TO SECOND,
 		notes VARCHAR(256)
 	)
+
+	IF os.path.exists( "../database/pick_hist.unl" ) THEN
+		LOAD FROM "../database/pick_hist.unl" INSERT INTO pick_hist
+	END IF
 
 	DISPLAY "Create table dbver ..."
 	CREATE TABLE dbver (
@@ -98,6 +104,7 @@ FUNCTION cre_tools()
 		tool_type CHAR(1),
 		tool_name VARCHAR(40),
 		tool_width DECIMAL(5,3),
+		tool_img VARCHAR(30),
 		broken BOOLEAN
 	)
 
@@ -110,8 +117,9 @@ FUNCTION cre_locks()
 	CREATE TABLE locks (
 		lock_code 		SERIAL,
 		manu_code 		CHAR(2),
-		lock_type 		CHAR(1),
 		lock_name 		VARCHAR(40),
+		lock_type 		CHAR(1),
+		lock_img			VARCHAR(20),
 		picked 				BOOLEAN,
 		pins 					SMALLINT,
 		pintypes		 	VARCHAR(20),
@@ -139,7 +147,8 @@ FUNCTION insTools()
 	DEFINE x SMALLINT
 	DISPLAY "Load tools ..."
 	TRY
-		LOAD FROM "../database/tools.unl" INSERT INTO tools (manu_code, set_name, tool_type, tool_name, tool_width, broken )
+		LOAD FROM "../database/tools.unl" 
+			INSERT INTO tools (manu_code, set_name, tool_type, tool_name, tool_width, tool_img, broken )
 	CATCH
 		DISPLAY SFMT("Failed to load tools.unl %1 %2", STATUS, SQLERRMESSAGE )
 	END TRY
@@ -153,8 +162,9 @@ FUNCTION insLocks()
 	TRY
 		LOAD FROM "../database/locks.unl" INSERT INTO locks (
 			manu_code 		,
-			lock_type 		,
 			lock_name 		,
+			lock_type 		,
+			lock_img      ,
 			picked 				,
 			pins 					,
 			pintypes		 	,
