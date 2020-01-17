@@ -70,7 +70,7 @@
       <DynamicProperty name="packageLabel" value="lockSport"/>
       <Directory destinationDirectory="$(RootDir)/bin" excludedFiles="Test.42r" includedFiles="*.42?" label="Binaries" sourceDirectory="$(ProjectDir)/bin"/>
       <Directory label="Config" sourceDirectory="$(ProjectDir)/config"/>
-      <Directory destinationDirectory="$(RootDir)/database" includedFiles="*.db" label="Database" sourceDirectory="$(ProjectDir)/database"/>
+      <Directory destinationDirectory="$(RootDir)/database" includedFiles="*.db,*.unl" label="Database" sourceDirectory="$(ProjectDir)/database"/>
       <Directory destinationDirectory="$(RootDir)/pics" includedFiles="*.png,*.jpg,*.ttf,image2font.txt" label="Images" sourceDirectory="$(ProjectDir)/pics"/>
     </Package>
     <Package binaryName="MyApp_Android" dependencies="400358049,781919164,159917928,212784684,715422167,362164715,313644474" description="Android Package" id="187810339" label="MyApp_Android" platform="Android">
@@ -84,34 +84,13 @@
       <Directory description="Resources" includedFiles="*.4ad,*.4st,*.4tm,*.4tb,*.4sm,*.42s,*.iem" label="Resources" recursive="false" sourceDirectory="$(ProjectDir)/resources"/>
       <Directory description="Web Components" destinationDirectory="$(RootDir)/webcomponents" label="Webcomponents" sourceDirectory="$(ProjectDir)/webcomponents"/>
     </Package>
-    <Package binaryName="MyApp_iOS" dependencies="400358049,781919164,159917928,212784684,715422167,362164715,313644474" description="iOS Package" id="88782120" label="MyApp_iOS" platform="iOS">
-      <DynamicProperty name="packageId" value="com.company.myapp"/>
-      <DynamicProperty name="packageLabel" value="MyApp"/>
-      <Directory description="Binaries" excludedFiles="Test.42r" includedFiles="*.42?" label="Binaries" recursive="false" sourceDirectory="$(ProjectDir)/bin"/>
-      <Directory description="Configuration Files" includedFiles="fglprofile" label="Config" recursive="false" sourceDirectory="$(ProjectDir)/config"/>
-      <Directory description="Database" includedFiles="*.db" label="Database" recursive="false" sourceDirectory="$(ProjectDir)/database"/>
-      <Directory description="Images" includedFiles="*.png,*.jpg,*.ttf,image2font.txt" label="Images" sourceDirectory="$(ProjectDir)/images"/>
-      <Directory description="Studio Library" includedFiles="*.42?" label="libgst" recursive="false" sourceDirectory="$(GSTLIBRARYDIR)/bin"/>
-      <Directory description="Resources" includedFiles="*.4ad,*.4st,*.4tm,*.4tb,*.4sm,*.42s,*.iem" label="Resources" recursive="false" sourceDirectory="$(ProjectDir)/resources"/>
-      <Directory description="Web Components" destinationDirectory="$(RootDir)/webcomponents" label="Webcomponents" sourceDirectory="$(ProjectDir)/webcomponents"/>
-    </Package>
-    <Package binaryName="MyApp_iOS_Simulator" dependencies="400358049,781919164,159917928,212784684,715422167,362164715,313644474" description="iOS Simulator Package" id="197274948" label="MyApp_iOS_Simulator" platform="iOS Simulator">
-      <DynamicProperty name="packageId" value="com.company.myapp"/>
-      <DynamicProperty name="packageLabel" value="MyApp"/>
-      <Directory description="Binaries" excludedFiles="Test.42r" includedFiles="*.42?" label="Binaries" recursive="false" sourceDirectory="$(ProjectDir)/bin"/>
-      <Directory description="Configuration Files" includedFiles="fglprofile" label="Config" recursive="false" sourceDirectory="$(ProjectDir)/config"/>
-      <Directory description="Database" includedFiles="*.db" label="Database" recursive="false" sourceDirectory="$(ProjectDir)/database"/>
-      <Directory description="Images" includedFiles="*.png,*.jpg,*.ttf,image2font.txt" label="Images" sourceDirectory="$(ProjectDir)/images"/>
-      <Directory description="Studio Library" includedFiles="*.42?" label="libgst" recursive="false" sourceDirectory="$(GSTLIBRARYDIR)/bin"/>
-      <Directory description="Resources" includedFiles="*.4ad,*.4st,*.4tm,*.4tb,*.4sm,*.42s,*.iem" label="Resources" recursive="false" sourceDirectory="$(ProjectDir)/resources"/>
-      <Directory description="Web Components" destinationDirectory="$(RootDir)/webcomponents" label="Webcomponents" sourceDirectory="$(ProjectDir)/webcomponents"/>
-    </Package>
   </Group>
-  <Group environment="filelist:FGLPROFILE=$(ProjectDir)/config/fglprofile,dirlist:DBPATH=$(ProjectDir)/database;$(DBPATH)" id="10414220" label="Project" language="Genero">
+  <Group environment="value:DBVER=1,value:DBNAME.sqt=../database/locksport.db,value:DBNAME=locksport,filelist:FGLPROFILE=$(ProjectDir)/config/fglprofile.pgs,dirlist:DBPATH=$(ProjectDir)/database;$(DBPATH)" id="10414220" label="Project" language="Genero">
     <Library binaryName="Config" id="362164715" label="Config">
       <File filePath="config/default.4ad"/>
       <File filePath="config/default.4st"/>
-      <File filePath="config/fglprofile"/>
+      <File filePath="../../../../../opt/fourjs/all/my_github/lockSport/config/fglprofile.pgs"/>
+      <File filePath="../../../../../opt/fourjs/all/my_github/lockSport/config/fglprofile.sqt"/>
       <File filePath="../../../../../opt/fourjs/all/my_github/lockSport/config/lockSport.xcf"/>
     </Library>
     <Library binaryName="Database" id="455109296" label="Database">

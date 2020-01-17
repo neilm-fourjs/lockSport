@@ -11,8 +11,8 @@ DEFINE m_pickhist DYNAMIC ARRAY OF RECORD LIKE pick_hist.*
 DEFINE m_save BOOLEAN = FALSE
 MAIN
 
-	CALL db.connect( "../database/locksport.db" )
-	CALL db.chk_db(1)
+	CALL db.connect( fgl_getEnv("DBNAME") )
+	CALL db.chk_db( fgl_getEnv("DBVER") )
 
 	CALL getData()
 
@@ -136,19 +136,22 @@ END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION tool_img( l_code SMALLINT ) RETURNS STRING
 	DEFINE x SMALLINT
+	DEFINE l_img STRING
 	FOR x = 1 TO m_pickTools.getLength()
-		DISPLAY "img: l_code:",l_code," ", m_pickTools[ x ].tool_code,":",m_pickTools[ x ].tool_img||".jpg"
-		IF m_pickTools[ x ].tool_code = l_code THEN RETURN m_pickTools[ x ].tool_img||".jpg" END IF
+		IF m_pickTools[ x ].tool_code = l_code THEN LET l_img = m_pickTools[ x ].tool_img||".jpg" END IF
 	END FOR
-	RETURN NULL
+	DISPLAY "ToolImg:",l_img
+	RETURN l_img
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION lock_img( l_code SMALLINT ) RETURNS STRING
 	DEFINE x SMALLINT
+	DEFINE l_img STRING
 	FOR x = 1 TO m_locks.getLength()
-		IF m_locks[ x ].lock_code = l_code THEN RETURN m_locks[ x ].lock_img||".jpg" END IF
+		IF m_locks[ x ].lock_code = l_code THEN LET l_img = m_locks[ x ].lock_img||".jpg" END IF
 	END FOR
-	RETURN NULL
+	DISPLAY "LockImg:",l_img
+	RETURN l_img
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION pick()
@@ -161,6 +164,12 @@ FUNCTION pick()
 
 	LET int_flag = FALSE
 	INPUT BY NAME l_pick.*, end_time ATTRIBUTES( UNBUFFERED, WITHOUT DEFAULTS )
+		ON CHANGE lock_code
+				DISPLAY lock_img( l_pick.lock_code ) TO lock_img
+
+		ON CHANGE pick_tool_code
+				DISPLAY tool_img( l_pick.pick_tool_code ) TO tool_img
+
 		ON ACTION now INFIELD time_picked
 			LET l_pick.time_picked = TIME
 			NEXT FIELD end_time
@@ -168,8 +177,10 @@ FUNCTION pick()
 			LET end_time = TIME
 			LET l_pick.duration = duration(end_time,l_pick.time_picked)
 			NEXT FIELD notes
+
 		ON ACTION calc
 			LET l_pick.duration = duration(end_time,l_pick.time_picked)
+
 		AFTER FIELD end_time
 			LET l_pick.duration = duration(end_time,l_pick.time_picked)
 	END INPUT

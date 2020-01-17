@@ -6,10 +6,9 @@ FUNCTION connect(l_nam STRING)
 	TRY
 		CONNECT TO l_nam
 	CATCH
-		DISPLAY SFMT("Connect failed: %1 %2", STATUS, SQLERRMESSAGE )
+		CALL fgl_winMessage("Error", SFMT("Connect failed: %1 %2", STATUS, SQLERRMESSAGE ),"exclamation")
 		EXIT PROGRAM
 	END TRY
-
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION chk_db(l_ver SMALLINT)
@@ -119,14 +118,14 @@ FUNCTION cre_locks()
 		manu_code 		CHAR(2),
 		lock_name 		VARCHAR(40),
 		lock_type 		CHAR(1),
-		lock_img			VARCHAR(20),
+		lock_img			VARCHAR(30),
 		picked 				BOOLEAN,
 		pins 					SMALLINT,
 		pintypes		 	VARCHAR(20),
 		binding 			VARCHAR(20),
 		pick_meth 		VARCHAR(20),
 		max_pickwidth DECIMAL(5,3),
-		tool_type 		VARCHAR(20),
+		tool_type 		VARCHAR(30),
 		tensioning 		VARCHAR(20),
 		fasted_pick 	DATETIME HOUR TO SECOND
 	)
@@ -180,4 +179,7 @@ FUNCTION insLocks()
 	END TRY
 	SELECT COUNT(*) INTO x FROM locks
 	DISPLAY SFMT("Loaded %1 locks.", x )
+	IF x = 0 THEN
+		EXIT PROGRAM
+	END IF
 END FUNCTION

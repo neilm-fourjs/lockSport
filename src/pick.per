@@ -1,5 +1,6 @@
 
 LAYOUT (TEXT="lockSport")
+HBOX ( SPLITTER )
 VBOX ( SPLITTER )
 HBOX ( SPLITTER )
 GRID
@@ -18,17 +19,6 @@ GRID
 [l008|f008    ]  
 }
 END -- GRID
-GRID
-{
-[l009]                            [timg   ]
-[f009                            ][       ]
-[                                ][       ]
-[                                ][       ]
-[limg           ]
-[               ]
-[               ]
-}
-END -- GRID
 END -- HBOX
 TABLE
 {
@@ -45,6 +35,24 @@ TABLE
 }
 END -- TABLE
 END -- VBOX
+GRID
+{
+[l009]                            
+[f009                            ]
+[                                ]
+[                                ]
+[                                ]
+[limg             ][timg         ]
+[                 ][             ]
+[                 ][             ]
+[                 ][             ]
+[                 ][             ]
+[                 ][             ]
+[                 ][             ]
+[                 ][             ]
+}
+END -- GRID
+END -- HBOX
 
 ATTRIBUTES
 LABEL l001 : lab1, TEXT=%"Lock:", JUSTIFY=RIGHT;
