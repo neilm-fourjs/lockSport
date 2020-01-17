@@ -1,26 +1,62 @@
 IMPORT os
 
-DEFINE m_dbver STRING
+IMPORT FGL lib
+
+CONSTANT C_DBVER = 2
+CONSTANT C_BACKUPDIR = "../../ls_backup"
+CONSTANT C_DBPDIR = "../database"
+DEFINE m_dbdir STRING
+DEFINE m_dbver SMALLINT
 
 FUNCTION connect(l_nam STRING)
 	TRY
 		CONNECT TO l_nam
 	CATCH
-		CALL fgl_winMessage("Error", SFMT("Connect failed: %1 %2", STATUS, SQLERRMESSAGE ),"exclamation")
+		CALL lib.error(SFMT("Connect failed: %1 %2", STATUS, SQLERRMESSAGE ))
 		EXIT PROGRAM
 	END TRY
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
-FUNCTION chk_db(l_ver SMALLINT)
+FUNCTION chk_db()
 	TRY
 		SELECT * INTO m_dbver FROM dbver
 	CATCH
 	END TRY
-	IF m_dbver IS NULL OR m_dbver != l_ver THEN CALL cre_db() END IF
+	IF m_dbver IS NULL OR m_dbver = 0 THEN CALL cre_db() END IF
+	DISPLAY "DbVer:",m_dbver
+	IF m_dbver < C_DBVER THEN
+		IF NOT upd_db() THEN EXIT PROGRAM END IF
+	END IF
 	DISPLAY "DbVer:",m_dbver
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
+FUNCTION cre_db()
+	IF NOT os.path.exists(C_BACKUPDIR) THEN
+		IF NOT os.path.mkdir(C_BACKUPDIR) THEN
+			CALL lib.error( SFMT("Failed to mkdir %1", C_BACKUPDIR ))
+		END IF
+		LET m_dbdir = C_DBPDIR
+	ELSE
+		LET m_dbdir = C_BACKUPDIR
+	END IF
 
+	CALL drop_db()
+	CALL cre_manus()
+	CALL cre_locks()
+	CALL cre_tools()
+	CALL cre_pick_hist()
+
+	DISPLAY "Create table dbver ..."
+	CREATE TABLE dbver (
+		dbver SMALLINT
+	)
+	LET m_dbver =1
+	INSERT INTO dbver VALUES(m_dbver)
+
+	IF NOT upd_db() THEN EXIT PROGRAM END IF
+	CALL save_db()
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
 FUNCTION drop_db()
 	CALL dropTab( "tools" )
 	CALL dropTab( "locks" )
@@ -29,34 +65,54 @@ FUNCTION drop_db()
 	CALL dropTab( "dbver" )
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
-FUNCTION cre_db()
+FUNCTION upd_db() RETURNS BOOLEAN
+	DEFINE l_stmt STRING
+	LET l_stmt = "ALTER TABLE pick_hist ADD COLUMN attempts SMALLINT"
+	TRY
+		EXECUTE IMMEDIATE l_stmt
+		UPDATE pick_hist SET attempts = 1
+		LET m_dbver = m_dbver + 1
+	CATCH
+		CALL lib.error( SFMT("upd_db: %1 \nfailed: %2 %3",l_stmt,STATUS,SQLERRMESSAGE))
+		RETURN FALSE
+	END TRY
+	UPDATE dbver SET dbver = m_dbver
 
-	CALL drop_db()
-	CALL cre_manus()
-	CALL cre_locks()
-	CALL cre_tools()
-
+	RETURN TRUE
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+FUNCTION cre_pick_hist()
+	DEFINE m_file STRING
 	DISPLAY "Create table pick_hist ..."
 	CREATE TABLE pick_hist (
-		lock_code INT,
-		pick_tool_code INT,
+		pick_id 					SERIAL,
+		lock_code 				INT,
+		pick_tool_code 		INT,
 		tension_tool_code INT,
-		tension_method CHAR(1),
-		date_picked DATE,
-		time_picked DATETIME HOUR TO SECOND,
-		duration DATETIME HOUR TO SECOND,
-		notes VARCHAR(256)
+		tension_method 		CHAR(1),
+		date_picked 			DATE,
+		time_picked 			DATETIME HOUR TO SECOND,
+		duration 					DATETIME HOUR TO SECOND,
+		notes 						VARCHAR(256)
 	)
 
-	IF os.path.exists( "../database/pick_hist.unl" ) THEN
-		LOAD FROM "../database/pick_hist.unl" INSERT INTO pick_hist
+	LET m_file = os.path.join(m_dbdir,"pick_hist.unl")
+	IF NOT os.path.exists( m_file ) THEN
+		LET m_file = os.path.join( C_DBPDIR,"pick_hist.unl")
+	END IF
+	IF os.path.exists( m_file ) THEN
+		DISPLAY SFMT("Load pick_hist from %1 ...",m_file)
+		LOAD FROM m_file INSERT INTO pick_hist{(					
+			lock_code,
+			pick_tool_code,
+			tension_tool_code,
+			tension_method,
+			date_picked,
+			time_picked,
+			duration,
+			notes)}
 	END IF
 
-	DISPLAY "Create table dbver ..."
-	CREATE TABLE dbver (
-		dbver SMALLINT
-	)
-	INSERT INTO dbver VALUES(1)
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION cre_manus()
@@ -127,7 +183,8 @@ FUNCTION cre_locks()
 		max_pickwidth DECIMAL(5,3),
 		tool_type 		VARCHAR(30),
 		tensioning 		VARCHAR(20),
-		fasted_pick 	DATETIME HOUR TO SECOND
+		fasted_pick 	DATETIME HOUR TO SECOND,
+		destroyed			BOOLEAN
 	)
 
 	CALL insLocks()
@@ -138,28 +195,39 @@ FUNCTION dropTab( l_tab STRING )
 		EXECUTE IMMEDIATE "drop table "||l_tab
 		DISPLAY "Dropped "||l_tab
 	CATCH
-		DISPLAY SFMT("Failed to drop %1: %2 %3", l_tab, STATUS, SQLERRMESSAGE )
+		CALL lib.error( SFMT("Failed to drop %1: %2 %3", l_tab, STATUS, SQLERRMESSAGE ) )
 	END TRY
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION insTools()
 	DEFINE x SMALLINT
-	DISPLAY "Load tools ..."
+	DEFINE m_file STRING
+	LET m_file = os.path.join(m_dbdir,"tools.unl")
+	IF NOT os.path.exists( m_file ) THEN
+		LET m_file = os.path.join( C_DBPDIR,"tools.unl")
+	END IF
+	DISPLAY SFMT("Load tools from %1 ...",m_file)
 	TRY
-		LOAD FROM "../database/tools.unl" 
+		LOAD FROM m_file
 			INSERT INTO tools (manu_code, set_name, tool_type, tool_name, tool_width, tool_img, broken )
 	CATCH
-		DISPLAY SFMT("Failed to load tools.unl %1 %2", STATUS, SQLERRMESSAGE )
+		CALL lib.error( SFMT("Failed to load tools.unl %1 %2", STATUS, SQLERRMESSAGE ) )
 	END TRY
 	SELECT COUNT(*) INTO x FROM tools
 	DISPLAY SFMT("Loaded %1 tools.", x )
+	IF x = 0 THEN	EXIT PROGRAM END IF
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION insLocks()
 	DEFINE x SMALLINT
-	DISPLAY "Load locks ..."
+	DEFINE m_file STRING
+	LET m_file = os.path.join(m_dbdir,"locks.unl")
+	IF NOT os.path.exists( m_file ) THEN
+		LET m_file = os.path.join( C_DBPDIR,"locks.unl")
+	END IF
+	DISPLAY SFMT("Load locks from %1 ...",m_file)
 	TRY
-		LOAD FROM "../database/locks.unl" INSERT INTO locks (
+		LOAD FROM m_file INSERT INTO locks (
 			manu_code 		,
 			lock_name 		,
 			lock_type 		,
@@ -172,14 +240,26 @@ FUNCTION insLocks()
 			max_pickwidth ,
 			tool_type 		,
 			tensioning 		,
-			fasted_pick 	
+			fasted_pick 	,
+			destroyed
 			 )
 	CATCH
-		DISPLAY SFMT("Failed to load locks.unl %1 %2", STATUS, SQLERRMESSAGE )
+		CALL lib.error( SFMT("Failed to load locks.unl %1 %2", STATUS, SQLERRMESSAGE ) )
 	END TRY
 	SELECT COUNT(*) INTO x FROM locks
 	DISPLAY SFMT("Loaded %1 locks.", x )
-	IF x = 0 THEN
-		EXIT PROGRAM
-	END IF
+	IF x = 0 THEN	EXIT PROGRAM END IF
 END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+FUNCTION save_db()
+	IF NOT os.path.exists(C_BACKUPDIR) THEN
+		IF NOT os.path.mkdir(C_BACKUPDIR) THEN
+			CALL lib.error( SFMT("Failed to mkdir %1", C_BACKUPDIR ))
+			RETURN
+		END IF
+	END IF
+	UNLOAD TO os.path.join(C_BACKUPDIR,"pick_hist.unl") SELECT * FROM pick_hist
+	UNLOAD TO os.path.join(C_BACKUPDIR,"tools.unl") SELECT * FROM tools
+	UNLOAD TO os.path.join(C_BACKUPDIR,"locks.unl") SELECT * FROM locks
+END FUNCTION
+

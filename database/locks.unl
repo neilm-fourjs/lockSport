@@ -1,22 +1,20 @@
-ML|No 130|P|ml_130|1|4|ssss||P|0.015|Short Hook|B||
-ST|BPL042L|P|st_bpl042l|1|5|sssss||R|0.015|City Rake|B||
-MX|MX8|P|mx_8|1|4|ssss||E|0.015|City Rake|B||
-ML|9140BLK|P|ml_9140blk|1|4|ssss|4321|P|0.02|Short Hook|B||
-ML|No 3|P|ml_3|1|4|ssss|4321|P||Short Hook|E||
-ST|WPL148|P|st_wpl148|1|4|ssss|1243|P|0.015|Short Hook|B||
-YL|P1109 Rim Cylinder|C|yl_p1109|1|5|$SsSs||P|0.02|Short Hook|T||
-ML|No 140|P|ml_140|1|4|ssss|4321|P|0.02|Short Hook|B light||
-ML|Safety 410|P|ml_410|1|6|$SSSSS||P|0.015|Short Hook|||
-AB|80TI/50|P|ab_80ti50|1|6|||P|0.02|Short Hook|T||
-AB|64TI/50|P|ab_64ti50|1|5|sssss||P|0.02|Short Hook|T||
-AB|64TI/40|P|ab_64ti40|0|5|sssss||P|0.015|Short Hook|||
-AB|64TI/40|P|ab_64ti40|0|5|sssss||P|0.015|Short Hook|||
-ML|No 150|P|ml_150|1|5|sssss||P|0.02|Short Hook|E||
-ML|No 150|P|ml_150|1|5|sssss||P|0.02|Short Hook|E||
-WK|Wilko 40mm|P|wk_40|1|4|ssss||E|0.02|Short Hook/Snake Rake|B||
-WK|Wilko 40mm|P|wk_40|1|4|ssss||P|0.02|Short Hook|B||
-SP|Cut Away|T|sp_cutaway|1|6|||P|0.02|Short Hook|E||
-SP|Revolver1|T|sp_revolver|1|6|||P|0.02|Short Hook|E||
-SP|Revolver2|T|sp_revolver|1|6|||P|0.02|Short Hook|E||
-SP|Revolver3|T|sp_revolver|1|6|||P|0.02|Short Hook|E||
-SP|Revolver4|T|sp_revolver|1|6|||P|0.02|Short Hook|E||
+ML|No 3|P|ml_3|1|4|ssss|4321|P||Short Hook|E||1
+ML|No 130|P|ml_130|1|4|ssss||P|0.015|Short Hook|B||0
+ST|BPL042L|P|st_bpl042l|1|5|sssss||R|0.015|City Rake|B||0
+MX|MX8|P|mx_8|1|4|ssss||E|0.015|City Rake|B||0
+ML|9140BLK|P|ml_9140blk|1|4|ssss|4321|P|0.02|Short Hook|B||0
+ML|No 3|P|ml_3|1|4|ssss|4321|P||Short Hook|E||0
+ST|WPL148|P|st_wpl148|1|4|ssss|1243|P|0.015|Short Hook|B||0
+YL|P1109 Rim Cylinder|C|yl_p1109|1|5|$SsSs||P|0.02|Short Hook|T||0
+ML|No 140|P|ml_140|1|4|ssss|4321|P|0.02|Short Hook|B light||0
+ML|Safety 410|P|ml_410|1|6|$SSSSS||P|0.015|Short Hook|||0
+AB|80TI/50|P|ab_80ti50|1|6|||P|0.02|Short Hook|T||0
+AB|64TI/50|P|ab_64ti50|1|5|sssss||P|0.02|Short Hook|T||0
+AB|64TI/40|P|ab_64ti40|0|5|sssss||P|0.015|Short Hook|||0
+AB|64TI/40|P|ab_64ti40|0|5|sssss||P|0.015|Short Hook|||0
+ML|No 150|P|ml_150|1|5|sssss||P|0.02|Short Hook|E||0
+ML|No 150|P|ml_150|1|5|sssss||P|0.02|Short Hook|E||0
+WK|Wilko 40mm|P|wk_40|1|4|ssss||E|0.02|Short Hook/Snake Rake|B||0
+WK|Wilko 40mm|P|wk_40|1|4|ssss||P|0.02|Short Hook|B||0
+SP|Cut Away|T|sp_cutaway|1|6|||P|0.02|Short Hook|E||0
+SP|Revolver|T|sp_revolver|1|6|||P|0.02|Short Hook|E||0

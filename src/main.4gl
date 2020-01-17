@@ -1,5 +1,7 @@
 
+IMPORT os
 IMPORT FGL db
+IMPORT FGL lib
 
 SCHEMA locksport
 
@@ -12,7 +14,7 @@ DEFINE m_save BOOLEAN = FALSE
 MAIN
 
 	CALL db.connect( fgl_getEnv("DBNAME") )
-	CALL db.chk_db( fgl_getEnv("DBVER") )
+	CALL db.chk_db()
 
 	CALL getData()
 
@@ -26,6 +28,12 @@ MAIN
 				DISPLAY BY NAME m_pickhist[ arr_curr() ].*
 				DISPLAY tool_img( m_pickhist[ arr_curr() ].pick_tool_code ) TO tool_img
 				DISPLAY lock_img( m_pickhist[ arr_curr() ].lock_code ) TO lock_img
+			ON ACTION UPDATE
+				LET int_flag = FALSE
+				INPUT m_pickhist[ arr_curr() ].* FROM pickhist[ scr_line() ].* ATTRIBUTES(WITHOUT DEFAULTS)
+				IF NOT int_flag THEN
+					UPDATE pick_hist SET pick_hist.* = m_pickhist[ arr_curr() ].* WHERE pick_id = m_pickhist[ arr_curr() ].pick_id
+				END IF
 		END DISPLAY
 
 		COMMAND "Show Tools"
@@ -35,13 +43,18 @@ MAIN
 		COMMAND "Pick"
 			CALL pick()
 
+		ON ACTION db_create
+			IF fgl_winQuestion("Confirm","Are you sure?","No","Yes|No","question",0) = "Yes" THEN
+				CALL db.cre_db()
+			END IF
+
+		ON ACTION db_save CALL db.save_db()
+
 		ON ACTION close EXIT DIALOG
 		ON ACTION quit EXIT DIALOG
 
 	END DIALOG
-	IF m_save THEN
-		UNLOAD TO "../database/pick_hist.unl" SELECT * FROM pick_hist
-	END IF
+	IF m_save THEN CALL db.save_db() END IF
 END MAIN
 --------------------------------------------------------------------------------------------------------------
 FUNCTION getData()
@@ -105,7 +118,7 @@ END FUNCTION
 FUNCTION cb_lock( l_cb ui.ComboBox )
 	DEFINE l_row SMALLINT = 1
 	FOR l_row = 1 TO m_locks.getLength()
-		CALL l_cb.addItem( m_locks[ l_row ].lock_code ,  getManu("L",m_locks[ l_row ].manu_code)||" "||m_locks[ l_row ].lock_name )
+		CALL l_cb.addItem( m_locks[ l_row ].lock_code ,  SFMT("%1. %2 %3",m_locks[ l_row ].lock_code,getManu("L",m_locks[ l_row ].manu_code),m_locks[ l_row ].lock_name) )
 	END FOR
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
@@ -186,7 +199,7 @@ FUNCTION pick()
 	END INPUT
 	IF NOT int_flag THEN
 		TRY
-			INSERT INTO pick_hist VALUES( l_pick.* )
+			INSERT INTO pick_hist VALUES  l_pick.*
 			LET m_save = TRUE
 		CATCH
 			ERROR SQLERRMESSAGE

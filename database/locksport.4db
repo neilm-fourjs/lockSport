@@ -21,16 +21,17 @@
     <Column fglLength="2" fglType="0" name="manu_code" notNull="false" order="2" status="U" uuid="db/column10"/>
     <Column fglLength="40" fglType="201" name="lock_name" notNull="false" order="3" status="U" uuid="db/column14"/>
     <Column fglLength="1" fglType="0" name="lock_type" notNull="false" order="4" status="U" uuid="db/column12"/>
-    <Column fglLength="20" fglType="201" name="lock_img" notNull="false" order="5" status="U" uuid="db/column46"/>
+    <Column fglLength="30" fglType="201" name="lock_img" notNull="false" order="5" status="U" uuid="db/column46"/>
     <Column fglLength="1" fglType="45" name="picked" notNull="false" order="6" status="U" uuid="db/column16"/>
     <Column fglLength="2" fglType="1" name="pins" notNull="false" order="7" status="U" uuid="db/column18"/>
     <Column fglLength="20" fglType="201" name="pintypes" notNull="false" order="8" status="U" uuid="db/column20"/>
     <Column fglLength="20" fglType="201" name="binding" notNull="false" order="9" status="U" uuid="db/column22"/>
     <Column fglLength="20" fglType="201" name="pick_meth" notNull="false" order="10" status="U" uuid="db/column24"/>
     <Column fglLength="1283" fglType="5" name="max_pickwidth" notNull="false" order="11" status="U" uuid="db/column26"/>
-    <Column fglLength="20" fglType="201" name="tool_type" notNull="false" order="12" status="U" uuid="db/column28"/>
+    <Column fglLength="30" fglType="201" name="tool_type" notNull="false" order="12" status="U" uuid="db/column28"/>
     <Column fglLength="20" fglType="201" name="tensioning" notNull="false" order="13" status="U" uuid="db/column30"/>
     <Column fglLength="1642" fglType="10" name="fasted_pick" notNull="false" order="14" status="U" uuid="db/column32"/>
+    <Column fglLength="1" fglType="45" name="destroyed" notNull="false" order="15" status="U" uuid="db/column47"/>
     <Index indexColumns="lock_code" indexConstraint="primaryKey" name="primary_key_locks" status="U" uuid="db/index2"/>
   </Table>
   <Table active="true" name="manus" status="U" uuid="db/table8">
@@ -39,14 +40,16 @@
     <Column fglLength="60" fglType="201" name="manu_name" notNull="false" order="3" status="U" uuid="db/column42"/>
   </Table>
   <Table active="true" name="pick_hist" status="U" uuid="db/table7">
-    <Column fglLength="4" fglType="2" name="lock_code" notNull="false" order="1" status="U" uuid="db/column33"/>
-    <Column fglLength="4" fglType="2" name="pick_tool_code" notNull="false" order="2" status="U" uuid="db/column35"/>
-    <Column fglLength="4" fglType="2" name="tension_tool_code" notNull="false" order="3" status="U" uuid="db/column37"/>
-    <Column fglLength="1" fglType="0" name="tension_method" notNull="false" order="4" status="U" uuid="db/column39"/>
-    <Column fglLength="4" fglType="7" name="date_picked" notNull="false" order="5" status="U" uuid="db/column41"/>
-    <Column fglLength="1642" fglType="10" name="time_picked" notNull="false" order="6" status="U" uuid="db/column43"/>
-    <Column fglLength="1642" fglType="10" name="duration" notNull="false" order="7" status="U" uuid="db/column45"/>
-    <Column fglLength="256" fglType="201" name="notes" notNull="false" order="8" status="U" uuid="db/column36"/>
+    <Column fglLength="4" fglType="6" name="pick_id" notNull="false" order="1" status="U" uuid="db/column48"/>
+    <Column fglLength="4" fglType="2" name="lock_code" notNull="false" order="2" status="U" uuid="db/column33"/>
+    <Column fglLength="4" fglType="2" name="pick_tool_code" notNull="false" order="3" status="U" uuid="db/column35"/>
+    <Column fglLength="4" fglType="2" name="tension_tool_code" notNull="false" order="4" status="U" uuid="db/column37"/>
+    <Column fglLength="1" fglType="0" name="tension_method" notNull="false" order="5" status="U" uuid="db/column39"/>
+    <Column fglLength="4" fglType="7" name="date_picked" notNull="false" order="6" status="U" uuid="db/column41"/>
+    <Column fglLength="1642" fglType="10" name="time_picked" notNull="false" order="7" status="U" uuid="db/column43"/>
+    <Column fglLength="1642" fglType="10" name="duration" notNull="false" order="8" status="U" uuid="db/column45"/>
+    <Column fglLength="256" fglType="201" name="notes" notNull="false" order="9" status="U" uuid="db/column36"/>
+    <Index indexColumns="pick_id" indexConstraint="primaryKey" name="primary_key_pick_hist" status="U" uuid="db/index3"/>
   </Table>
   <Table active="true" name="tools" status="U" uuid="db/table12">
     <Column fglLength="4" fglType="6" name="tool_code" notNull="false" order="1" status="U" uuid="db/column52"/>

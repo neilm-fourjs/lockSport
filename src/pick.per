@@ -75,6 +75,7 @@ BUTTONEDIT f007 = FORMONLY.end_time, ACTION=now, STYLE="big", NOT NULL;
 BUTTONEDIT f008 = FORMONLY.duration, ACTION=calc, STYLE="big", NOT NULL;
 TEXTEDIT f009 = FORMONLY.notes;
 
+PHANTOM FORMONLY.pick_id;
 COMBOBOX a001 = FORMONLY.alock_code, INITIALIZER=cb_lock, TITLE=%"Lock";
 COMBOBOX a002 = FORMONLY.apick_tool_code, INITIALIZER=cb_tool, TITLE=%"Pick";
 COMBOBOX a003 = FORMONLY.atension_tool_code, INITIALIZER=cb_tool, TITLE=%"Tensioner";
@@ -88,4 +89,4 @@ IMAGE timg = FORMONLY.tool_img, AUTOSCALE;
 IMAGE limg = FORMONLY.lock_img, AUTOSCALE;
 
 INSTRUCTIONS
-SCREEN RECORD pickhist ( FORMONLY.alock_code  THRU FORMONLY.anotes )
+SCREEN RECORD pickhist ( FORMONLY.pick_id  THRU FORMONLY.anotes )
