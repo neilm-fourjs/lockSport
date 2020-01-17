@@ -1,7 +1,7 @@
 
 LAYOUT (TEXT="lockSport")
-VBOX
-HBOX
+VBOX ( SPLITTER )
+HBOX ( SPLITTER )
 GRID
 {
 [l001|f001                       ]
@@ -20,15 +20,23 @@ GRID
 END -- GRID
 GRID
 {
-[l009]
-[f009                                             ]
-[                                                 ]
-[                                                 ]
+[l009]                            [timg   ]
+[f009                            ][       ]
+[                                ][       ]
+[                                ][       ]
+[limg           ]
+[               ]
+[               ]
 }
 END -- GRID
 END -- HBOX
 TABLE
 {
+[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a008            ]
+[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a008            ]
+[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a008            ]
+[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a008            ]
+[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a008            ]
 [a001        |a002          |a003          |a004 |a005      |a006    |a007    |a008            ]
 [a001        |a002          |a003          |a004 |a005      |a006    |a007    |a008            ]
 [a001        |a002          |a003          |a004 |a005      |a006    |a007    |a008            ]
@@ -67,6 +75,9 @@ a005 = FORMONLY.adate_picked, TITLE=%"Date";
 a006 = FORMONLY.atime_picked, TITLE=%"Time";
 a007 = FORMONLY.aduration, TITLE=%"Duration";
 a008 = FORMONLY.anotes, TITLE=%"Notes";
+
+IMAGE timg = FORMONLY.tool_img, AUTOSCALE;
+IMAGE limg = FORMONLY.lock_img, AUTOSCALE;
 
 INSTRUCTIONS
 SCREEN RECORD pickhist ( FORMONLY.alock_code  THRU FORMONLY.anotes )

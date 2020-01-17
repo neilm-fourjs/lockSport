@@ -24,7 +24,10 @@ MAIN
 		DISPLAY ARRAY m_pickhist TO pickhist.*
 			BEFORE ROW
 				DISPLAY BY NAME m_pickhist[ arr_curr() ].*
+				DISPLAY tool_img( m_pickhist[ arr_curr() ].pick_tool_code ) TO tool_img
+				DISPLAY lock_img( m_pickhist[ arr_curr() ].lock_code ) TO lock_img
 		END DISPLAY
+
 		COMMAND "Show Tools"
 			CALL show_tools()
 		COMMAND "Show Locks"
@@ -129,6 +132,23 @@ FUNCTION cb_tool( l_cb ui.ComboBox )
 			END IF
 		END FOR
 	END IF
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+FUNCTION tool_img( l_code SMALLINT ) RETURNS STRING
+	DEFINE x SMALLINT
+	FOR x = 1 TO m_pickTools.getLength()
+		DISPLAY "img: l_code:",l_code," ", m_pickTools[ x ].tool_code,":",m_pickTools[ x ].tool_img||".jpg"
+		IF m_pickTools[ x ].tool_code = l_code THEN RETURN m_pickTools[ x ].tool_img||".jpg" END IF
+	END FOR
+	RETURN NULL
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+FUNCTION lock_img( l_code SMALLINT ) RETURNS STRING
+	DEFINE x SMALLINT
+	FOR x = 1 TO m_locks.getLength()
+		IF m_locks[ x ].lock_code = l_code THEN RETURN m_locks[ x ].lock_img||".jpg" END IF
+	END FOR
+	RETURN NULL
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION pick()

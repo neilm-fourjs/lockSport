@@ -16,7 +16,7 @@ ML|No 150|P|ml_150|1|5|sssss||P|0.02|Short Hook|E||
 WK|Wilko 40mm|P|wk_40|1|4|ssss||E|0.02|Short Hook/Snake Rake|B||
 WK|Wilko 40mm|P|wk_40|1|4|ssss||P|0.02|Short Hook|B||
 SP|Cut Away|T|sp_cutaway|1|6|||P|0.02|Short Hook|E||
-SP|Revolver1|T|sp_revolver1|1|6|||P|0.02|Short Hook|E||
-SP|Revolver2|T|sp_revolver2|1|6|||P|0.02|Short Hook|E||
-SP|Revolver3|T|sp_revolver3|1|6|||P|0.02|Short Hook|E||
-SP|Revolver4|T|sp_revolver4|1|6|||P|0.02|Short Hook|E||
+SP|Revolver1|T|sp_revolver|1|6|||P|0.02|Short Hook|E||
+SP|Revolver2|T|sp_revolver|1|6|||P|0.02|Short Hook|E||
+SP|Revolver3|T|sp_revolver|1|6|||P|0.02|Short Hook|E||
+SP|Revolver4|T|sp_revolver|1|6|||P|0.02|Short Hook|E||

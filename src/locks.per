@@ -1,9 +1,17 @@
 LAYOUT ( TEXT=%"Locks" )
-HBOX
+HBOX ( SPLITTER )
 TABLE
 {
 [a00|a001      |a002 |a003        |b|a4|a005  |a006  |a007 |a008  |a009  |a010   |a011  ]
-
+[a00|a001      |a002 |a003        |b|a4|a005  |a006  |a007 |a008  |a009  |a010   |a011  ]
+[a00|a001      |a002 |a003        |b|a4|a005  |a006  |a007 |a008  |a009  |a010   |a011  ]
+[a00|a001      |a002 |a003        |b|a4|a005  |a006  |a007 |a008  |a009  |a010   |a011  ]
+[a00|a001      |a002 |a003        |b|a4|a005  |a006  |a007 |a008  |a009  |a010   |a011  ]
+[a00|a001      |a002 |a003        |b|a4|a005  |a006  |a007 |a008  |a009  |a010   |a011  ]
+[a00|a001      |a002 |a003        |b|a4|a005  |a006  |a007 |a008  |a009  |a010   |a011  ]
+[a00|a001      |a002 |a003        |b|a4|a005  |a006  |a007 |a008  |a009  |a010   |a011  ]
+[a00|a001      |a002 |a003        |b|a4|a005  |a006  |a007 |a008  |a009  |a010   |a011  ]
+[a00|a001      |a002 |a003        |b|a4|a005  |a006  |a007 |a008  |a009  |a010   |a011  ]
 }
 END -- TABLE
 GRID
@@ -31,7 +39,7 @@ a009 = FORMONLY.tool_type, TITLE=%"Tool";
 COMBOBOX a010 = FORMONLY.tensioning, TITLE=%"Tensioning", ITEMS=(("T","TOK"),("B","BOK"),("E","Either"));
 a011 = FORMONLY.fasted_pick, TITLE=%"Fasted";
 
-IMAGE img = FORMONLY.img, AUTOSCALE;
+IMAGE img = FORMONLY.img, AUTOSCALE, STRETCH=BOTH;
 
 INSTRUCTIONS
 SCREEN RECORD locks ( FORMONLY.lock_code THRU FORMONLY.fasted_pick )
