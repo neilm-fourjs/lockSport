@@ -49,6 +49,7 @@
     <Column fglLength="1642" fglType="10" name="time_picked" notNull="false" order="7" status="U" uuid="db/column43"/>
     <Column fglLength="1642" fglType="10" name="duration" notNull="false" order="8" status="U" uuid="db/column45"/>
     <Column fglLength="256" fglType="201" name="notes" notNull="false" order="9" status="U" uuid="db/column36"/>
+    <Column fglLength="2" fglType="1" name="attempts" notNull="false" order="10" status="U" uuid="db/column49"/>
     <Index indexColumns="pick_id" indexConstraint="primaryKey" name="primary_key_pick_hist" status="U" uuid="db/index3"/>
   </Table>
   <Table active="true" name="tools" status="U" uuid="db/table12">

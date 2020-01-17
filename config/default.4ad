@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ANSI_X3.4-1968"?>
 <ActionDefaultList>
-  <ActionDefault name="accept" image="accept" text="OK" acceleratorName="Return" acceleratorName2="Enter" contextMenu="no"/>
-  <ActionDefault name="cancel" image="cancel" validate="no" text="Cancel" acceleratorName="Escape" contextMenu="no"/>
+  <ActionDefault name="accept" image="fa-check" text="OK" acceleratorName="Return" acceleratorName2="Enter" contextMenu="no"/>
+  <ActionDefault name="cancel" image="fa-close" validate="no" text="Cancel" acceleratorName="Escape" contextMenu="no"/>
   <ActionDefault name="insert" text="Insert" acceleratorName="F3" contextMenu="no"/>
   <ActionDefault name="append" text="Append" acceleratorName="Control-F3" contextMenu="no"/>
   <ActionDefault name="update" image="fa-pencil" text="Update" contextMenu="no"/>
@@ -31,10 +31,14 @@
   <ActionDefault name="prevtab" text="Previous Folder Tab" acceleratorName="Control-Shift-Tab" contextMenu="no"/>
   <ActionDefault name="dialogtouched" validate="no" defaultView="no"  contextMenu="no"/>
 
-  <ActionDefault name="db_create" validate="no" text="DB Reset" image="fa-recycle" acceleratorName="enter" contextMenu="no"/>
-  <ActionDefault name="db_save" validate="no" text="DB Save" image="fa-floppy-o" acceleratorName="enter" contextMenu="no"/>
+  <ActionDefault name="db_reset" validate="no" text="DB Reset" image="fa-recycle" contextMenu="no"/>
+  <ActionDefault name="db_save" validate="no" text="DB Save" image="fa-floppy-o" contextMenu="no"/>
+  <ActionDefault name="pick" text="Pick" image="fa-unlock-alt" acceleratorName="p" contextMenu="no"/>
+  <ActionDefault name="list_tools" text="List Tools" image="fa-list" acceleratorName="t" contextMenu="no"/>
+  <ActionDefault name="list_locks" text="List Locks" image="fa-list" acceleratorName="l" contextMenu="no"/>
 
   <ActionDefault name="now" validate="no" text="Now" image="fa-clock-o" acceleratorName="enter" contextMenu="no"/>
-  <ActionDefault name="calc" validate="no" text="Calc" image="fa-calculator" acceleratorName="+" contextMenu="no"/>
+  <ActionDefault name="calc" validate="no" text="Calc" image="fa-calculator" acceleratorName="*" contextMenu="no"/>
+  <ActionDefault name="plus" validate="no" text="Plus" image="fa-plus" acceleratorName="+" contextMenu="no"/>
   <ActionDefault name="quit" validate="no" text="Quit" image="fa-power-off" acceleratorName="Escape" contextMenu="no"/>
 </ActionDefaultList>

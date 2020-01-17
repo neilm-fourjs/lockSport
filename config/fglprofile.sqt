@@ -1,1 +1,4 @@
+
+ls.dbname = "../database/locksport.db"
+
 dbi.default.driver = "dbmsqt"

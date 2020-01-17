@@ -13,13 +13,12 @@ DEFINE m_pickhist DYNAMIC ARRAY OF RECORD LIKE pick_hist.*
 DEFINE m_save BOOLEAN = FALSE
 MAIN
 
-	CALL db.connect( fgl_getEnv("DBNAME") )
-	CALL db.chk_db()
-
+	CALL db.connect()
 	CALL getData()
 
 	OPEN FORM p FROM "pick"
 	DISPLAY FORM p
+	CALL fgl_setTitle( SFMT("Locksport DB: %1 : %2", db.m_dbName, db.m_dbVer ) )
 
 	CALL pick_history()
 	DIALOG ATTRIBUTES(UNBUFFERED)
@@ -36,18 +35,14 @@ MAIN
 				END IF
 		END DISPLAY
 
-		COMMAND "Show Tools"
-			CALL show_tools()
-		COMMAND "Show Locks"
-			CALL show_locks()
-		COMMAND "Pick"
-			CALL pick()
+		ON ACTION pick CALL pick()
+		ON ACTION list_tools CALL show_tools()
+		ON ACTION list_locks CALL show_locks()
 
-		ON ACTION db_create
+		ON ACTION db_reset
 			IF fgl_winQuestion("Confirm","Are you sure?","No","Yes|No","question",0) = "Yes" THEN
 				CALL db.cre_db()
 			END IF
-
 		ON ACTION db_save CALL db.save_db()
 
 		ON ACTION close EXIT DIALOG
@@ -118,7 +113,7 @@ END FUNCTION
 FUNCTION cb_lock( l_cb ui.ComboBox )
 	DEFINE l_row SMALLINT = 1
 	FOR l_row = 1 TO m_locks.getLength()
-		CALL l_cb.addItem( m_locks[ l_row ].lock_code ,  SFMT("%1. %2 %3",m_locks[ l_row ].lock_code,getManu("L",m_locks[ l_row ].manu_code),m_locks[ l_row ].lock_name) )
+		CALL l_cb.addItem( m_locks[ l_row ].lock_code ,  SFMT("%2 %3 (%1)",m_locks[ l_row ].lock_code,getManu("L",m_locks[ l_row ].manu_code),m_locks[ l_row ].lock_name) )
 	END FOR
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
@@ -128,7 +123,7 @@ FUNCTION cb_tool( l_cb ui.ComboBox )
 	IF l_cb.getColumnName() = "pick_tool_code" OR l_cb.getColumnName() = "apick_tool_code" THEN
 		FOR l_row = 1 TO m_pickTools.getLength()
 			IF NOT m_pickTools[ l_row ].broken THEN
-				LET l_tool =  SFMT("%1  %2  %3",
+				LET l_tool =  SFMT("%3 %1 (%2)",
 														m_pickTools[ l_row ].tool_name,
 														m_pickTools[ l_row ].tool_width,
 														getManu("T",m_pickTools[ l_row ].manu_code))
@@ -138,7 +133,7 @@ FUNCTION cb_tool( l_cb ui.ComboBox )
 	ELSE
 		FOR l_row = 1 TO m_tensionTools.getLength()
 			IF NOT m_tensionTools[ l_row ].broken THEN
-				LET l_tool =  SFMT("%1 %2 %3", getManu("T",m_tensionTools[ l_row ].manu_code),
+				LET l_tool =  SFMT("%1 %2 (%3)", getManu("T",m_tensionTools[ l_row ].manu_code),
 														m_tensionTools[ l_row ].tool_name,
 														m_tensionTools[ l_row ].tool_width )
 				CALL l_cb.addItem( m_tensionTools[ l_row ].tool_code ,  l_tool )
@@ -172,8 +167,8 @@ FUNCTION pick()
 	DEFINE end_time DATETIME HOUR TO SECOND
 
 	LET l_pick.date_picked = TODAY
-	LET l_pick.time_picked = TIME
 	LET l_pick.tension_method = "B"
+	LET l_pick.attempts = 1
 
 	LET int_flag = FALSE
 	INPUT BY NAME l_pick.*, end_time ATTRIBUTES( UNBUFFERED, WITHOUT DEFAULTS )
@@ -182,6 +177,9 @@ FUNCTION pick()
 
 		ON CHANGE pick_tool_code
 				DISPLAY tool_img( l_pick.pick_tool_code ) TO tool_img
+
+		BEFORE FIELD time_picked
+			LET l_pick.time_picked = TIME
 
 		ON ACTION now INFIELD time_picked
 			LET l_pick.time_picked = TIME
@@ -193,6 +191,8 @@ FUNCTION pick()
 
 		ON ACTION calc
 			LET l_pick.duration = duration(end_time,l_pick.time_picked)
+		ON ACTION plus
+			LET l_pick.attempts = l_pick.attempts + 1
 
 		AFTER FIELD end_time
 			LET l_pick.duration = duration(end_time,l_pick.time_picked)

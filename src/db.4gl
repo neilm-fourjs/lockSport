@@ -5,16 +5,20 @@ IMPORT FGL lib
 CONSTANT C_DBVER = 2
 CONSTANT C_BACKUPDIR = "../../ls_backup"
 CONSTANT C_DBPDIR = "../database"
-DEFINE m_dbdir STRING
-DEFINE m_dbver SMALLINT
 
-FUNCTION connect(l_nam STRING)
+PUBLIC DEFINE m_dbname STRING
+PUBLIC DEFINE m_dbver SMALLINT
+
+DEFINE m_dbdir STRING
+FUNCTION connect()
+	LET m_dbname = fgl_getResource("ls.dbname")
 	TRY
-		CONNECT TO l_nam
+		CONNECT TO m_dbname
 	CATCH
 		CALL lib.error(SFMT("Connect failed: %1 %2", STATUS, SQLERRMESSAGE ))
 		EXIT PROGRAM
 	END TRY
+	CALL chk_db()
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION chk_db()
@@ -26,8 +30,9 @@ FUNCTION chk_db()
 	DISPLAY "DbVer:",m_dbver
 	IF m_dbver < C_DBVER THEN
 		IF NOT upd_db() THEN EXIT PROGRAM END IF
+		DISPLAY "DbVer:",m_dbver," Now"
 	END IF
-	DISPLAY "DbVer:",m_dbver
+
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION cre_db()
@@ -54,6 +59,11 @@ FUNCTION cre_db()
 	INSERT INTO dbver VALUES(m_dbver)
 
 	IF NOT upd_db() THEN EXIT PROGRAM END IF
+
+	CALL load_tools()
+	CALL load_locks()
+	CALL load_pick_hist()
+
 	CALL save_db()
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
@@ -82,7 +92,7 @@ FUNCTION upd_db() RETURNS BOOLEAN
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION cre_pick_hist()
-	DEFINE m_file STRING
+
 	DISPLAY "Create table pick_hist ..."
 	CREATE TABLE pick_hist (
 		pick_id 					SERIAL,
@@ -95,24 +105,6 @@ FUNCTION cre_pick_hist()
 		duration 					DATETIME HOUR TO SECOND,
 		notes 						VARCHAR(256)
 	)
-
-	LET m_file = os.path.join(m_dbdir,"pick_hist.unl")
-	IF NOT os.path.exists( m_file ) THEN
-		LET m_file = os.path.join( C_DBPDIR,"pick_hist.unl")
-	END IF
-	IF os.path.exists( m_file ) THEN
-		DISPLAY SFMT("Load pick_hist from %1 ...",m_file)
-		LOAD FROM m_file INSERT INTO pick_hist{(					
-			lock_code,
-			pick_tool_code,
-			tension_tool_code,
-			tension_method,
-			date_picked,
-			time_picked,
-			duration,
-			notes)}
-	END IF
-
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION cre_manus()
@@ -163,7 +155,6 @@ FUNCTION cre_tools()
 		broken BOOLEAN
 	)
 
-	CALL insTools()
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION cre_locks()
@@ -187,7 +178,6 @@ FUNCTION cre_locks()
 		destroyed			BOOLEAN
 	)
 
-	CALL insLocks()
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION dropTab( l_tab STRING )
@@ -199,7 +189,7 @@ FUNCTION dropTab( l_tab STRING )
 	END TRY
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
-FUNCTION insTools()
+FUNCTION load_tools()
 	DEFINE x SMALLINT
 	DEFINE m_file STRING
 	LET m_file = os.path.join(m_dbdir,"tools.unl")
@@ -208,8 +198,7 @@ FUNCTION insTools()
 	END IF
 	DISPLAY SFMT("Load tools from %1 ...",m_file)
 	TRY
-		LOAD FROM m_file
-			INSERT INTO tools (manu_code, set_name, tool_type, tool_name, tool_width, tool_img, broken )
+		LOAD FROM m_file INSERT INTO tools { (manu_code, set_name, tool_type, tool_name, tool_width, tool_img, broken )}
 	CATCH
 		CALL lib.error( SFMT("Failed to load tools.unl %1 %2", STATUS, SQLERRMESSAGE ) )
 	END TRY
@@ -218,7 +207,7 @@ FUNCTION insTools()
 	IF x = 0 THEN	EXIT PROGRAM END IF
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
-FUNCTION insLocks()
+FUNCTION load_locks()
 	DEFINE x SMALLINT
 	DEFINE m_file STRING
 	LET m_file = os.path.join(m_dbdir,"locks.unl")
@@ -227,7 +216,7 @@ FUNCTION insLocks()
 	END IF
 	DISPLAY SFMT("Load locks from %1 ...",m_file)
 	TRY
-		LOAD FROM m_file INSERT INTO locks (
+		LOAD FROM m_file INSERT INTO locks {(
 			manu_code 		,
 			lock_name 		,
 			lock_type 		,
@@ -242,13 +231,36 @@ FUNCTION insLocks()
 			tensioning 		,
 			fasted_pick 	,
 			destroyed
-			 )
+			 )}
 	CATCH
 		CALL lib.error( SFMT("Failed to load locks.unl %1 %2", STATUS, SQLERRMESSAGE ) )
 	END TRY
 	SELECT COUNT(*) INTO x FROM locks
 	DISPLAY SFMT("Loaded %1 locks.", x )
 	IF x = 0 THEN	EXIT PROGRAM END IF
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+FUNCTION load_pick_hist()
+	DEFINE x SMALLINT
+	DEFINE m_file STRING
+	LET m_file = os.path.join(m_dbdir,"pick_hist.unl")
+	IF NOT os.path.exists( m_file ) THEN
+		LET m_file = os.path.join( C_DBPDIR,"pick_hist.unl")
+	END IF
+	IF os.path.exists( m_file ) THEN
+		DISPLAY SFMT("Load pick_hist from %1 ...",m_file)
+		LOAD FROM m_file INSERT INTO pick_hist {(					
+			lock_code,
+			pick_tool_code,
+			tension_tool_code,
+			tension_method,
+			date_picked,
+			time_picked,
+			duration,
+			notes)}
+	END IF
+	SELECT COUNT(*) INTO x FROM pick_hist
+	DISPLAY SFMT("Loaded %1 pick_hist.", x )
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION save_db()

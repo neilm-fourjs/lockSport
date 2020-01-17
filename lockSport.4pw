@@ -85,7 +85,7 @@
       <Directory description="Web Components" destinationDirectory="$(RootDir)/webcomponents" label="Webcomponents" sourceDirectory="$(ProjectDir)/webcomponents"/>
     </Package>
   </Group>
-  <Group environment="value:DBNAME_s=../database/locksport.db,value:DBNAME=locksport,filelist:FGLPROFILE=$(ProjectDir)/config/fglprofile.pgs,dirlist:DBPATH=$(ProjectDir)/database;$(DBPATH)" id="10414220" label="Project" language="Genero">
+  <Group environment="filelist:FGLPROFILE=$(ProjectDir)/config/fglprofile.sqt,dirlist:DBPATH=$(ProjectDir)/database;$(DBPATH)" id="10414220" label="Project" language="Genero">
     <Library binaryName="Config" id="362164715" label="Config">
       <File filePath="config/default.4ad"/>
       <File filePath="config/default.4st"/>

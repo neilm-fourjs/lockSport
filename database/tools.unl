@@ -1,45 +1,45 @@
-DF|Praxis|H|Short Hook|0.023|df_shorthook|0
-DF|Praxis|H|Mid Hook|0.023|df_midhook|0
-DF|Praxis|H|Offset Hybrid|0.023|df_hybrid|0
-DF|Praxis|D|Half Diamond|0.023|df_halfdiamond|0
-DF|Praxis|R|City Rake|0.023|df_cityrake|0
-DF|Praxis|R|Triple Peek Rake|0.023|df_triplepeek|0
-DF|Praxis|R|Twin Peek Rake|0.023|df_twinpeek|0
-DF|Praxis|R|Snake Rake|0.023|df_snakerake|0
-DF|Praxis|H|Short Hook|0.015|df_shorthook|0
-DF|Praxis|H|Mid Hook|0.015|df_midhook|0
-DF|Praxis|H|Offset Hybrid|0.015|df_hybrid|0
-DF|Praxis|D|Half Diamond|0.015|df_halfdiamond|0
-DF|Praxis|R|City Rake|0.015|df_cityrake|0
-DF|Praxis|R|Triple Peek Rake|0.015|df_triplepeek|0
-DF|Praxis|R|Twin Peek Rake|0.015|df_twinpeek|0
-DF|Praxis|R|Snake Rake|0.015|df_snakerake|0
-DF|Praxis|T|TOK tension tool|0.030|df_toktension|0
-DF|Praxis|T|TOK tension tool|0.050|df_toktension|0
-SP|Tuxedo|R|City Rake|0.024|sp_cityrake|0
-SP|Tuxedo Royale|R|City Rake|0.015|sp_cityrake|0
-SP|Tuxedo Royale|H|Euro Hook|0.015|sp_eurohook|0
-SP|Tuxedo|D|Half Diamond|0.024|sp_halfdiamond|0
-SP|Tuxedo Royale|D|Half Diamond|0.015|sp_halfdiamond|0
-SP|Bomba Royale|D|Half Diamond|0.02|sp_halfdiamond|0
-SP||H|High Reach Hook|0.024|sp_highreach|0
-SP|Tuxedo|H|Offset Hybrid|0.024|sp_hyrid|0
-SP|Tuxedo Royale|H|Offset Hybrid|0.015|sp_hyrid|0
-SP|Tuxedo|H|Short Hook|0.024|sp_shorthook|0
-SP|Tuxedo|H|Short Hook|0.015|sp_shorthook|0
-SP|Tuxedo Royale|H|Short Hook|0.02|sp_shorthook|1
-SP|Bomba Royale|H|Short Hook|0.02|sp_shorthook|0
-SP|Tuxedo|R|Snake Rake|0.024|sp_snakerake|0
-SP|Tuxedo Royale|R|Snake Rake|0.015|sp_snakerake|0
-SP|Bomba Royale|R|Snake Rake|0.02|sp_snakerake|0
-SP||H|Steep Hook|0.024|sp_steephook|0
-SP|Tuxedo|R|Triple Peek Rake|0.024|sp_triplepeek|0
-SP|Tuxedo Royale|R|Triple Peek Rake|0.015|sp_triplepeek|0
-SP|Bomba Royale|R|Triple Peek Rake|0.02|sp_triplepeek|0
-SP|Bomba Royale|R|Twin Peek Rake|0.02|sp_twinpeek|0
-SP||T|Z Tensioner straight|0.130|sp_tensioner_str|0
-SP||T|Z Tensioner straight|0.108|sp_tensioner_str|0
-SP||T|Z Tensioner straight|0.094|sp_tensioner_str|0
-SP||T|Z Tensioner twisted|0.130|sp_tensioner_twi|0
-SP||T|Z Tensioner twisted|0.108|sp_tensioner_twi|0
-SP||T|Z Tensioner twisted|0.094|sp_tensioner_twi|0
+1|DF|Praxis|H|Short Hook|0.023|df_shorthook|0|
+2|DF|Praxis|H|Mid Hook|0.023|df_midhook|0|
+3|DF|Praxis|H|Offset Hybrid|0.023|df_hybrid|0|
+4|DF|Praxis|D|Half Diamond|0.023|df_halfdiamond|0|
+5|DF|Praxis|R|City Rake|0.023|df_cityrake|0|
+6|DF|Praxis|R|Triple Peek Rake|0.023|df_triplepeek|0|
+7|DF|Praxis|R|Twin Peek Rake|0.023|df_twinpeek|0|
+8|DF|Praxis|R|Snake Rake|0.023|df_snakerake|0|
+9|DF|Praxis|H|Short Hook|0.015|df_shorthook|0|
+10|DF|Praxis|H|Mid Hook|0.015|df_midhook|0|
+11|DF|Praxis|H|Offset Hybrid|0.015|df_hybrid|0|
+12|DF|Praxis|D|Half Diamond|0.015|df_halfdiamond|0|
+13|DF|Praxis|R|City Rake|0.015|df_cityrake|0|
+14|DF|Praxis|R|Triple Peek Rake|0.015|df_triplepeek|0|
+15|DF|Praxis|R|Twin Peek Rake|0.015|df_twinpeek|0|
+16|DF|Praxis|R|Snake Rake|0.015|df_snakerake|0|
+17|DF|Praxis|T|TOK tension tool|0.030|df_toktension|0|
+18|DF|Praxis|T|TOK tension tool|0.050|df_toktension|0|
+19|SP|Tuxedo|R|City Rake|0.024|sp_cityrake|0|
+20|SP|Tuxedo Royale|R|City Rake|0.015|sp_cityrake|0|
+21|SP|Tuxedo Royale|H|Euro Hook|0.015|sp_eurohook|0|
+22|SP|Tuxedo|D|Half Diamond|0.024|sp_halfdiamond|0|
+23|SP|Tuxedo Royale|D|Half Diamond|0.015|sp_halfdiamond|0|
+24|SP|Bomba Royale|D|Half Diamond|0.020|sp_halfdiamond|0|
+25|SP||H|High Reach Hook|0.024|sp_highreach|0|
+26|SP|Tuxedo|H|Offset Hybrid|0.024|sp_hyrid|0|
+27|SP|Tuxedo Royale|H|Offset Hybrid|0.015|sp_hyrid|0|
+28|SP|Tuxedo|H|Short Hook|0.024|sp_shorthook|0|
+29|SP|Tuxedo|H|Short Hook|0.015|sp_shorthook|0|
+30|SP|Tuxedo Royale|H|Short Hook|0.020|sp_shorthook|1|
+31|SP|Bomba Royale|H|Short Hook|0.020|sp_shorthook|0|
+32|SP|Tuxedo|R|Snake Rake|0.024|sp_snakerake|0|
+33|SP|Tuxedo Royale|R|Snake Rake|0.015|sp_snakerake|0|
+34|SP|Bomba Royale|R|Snake Rake|0.020|sp_snakerake|0|
+35|SP||H|Steep Hook|0.024|sp_steephook|0|
+36|SP|Tuxedo|R|Triple Peek Rake|0.024|sp_triplepeek|0|
+37|SP|Tuxedo Royale|R|Triple Peek Rake|0.015|sp_triplepeek|0|
+38|SP|Bomba Royale|R|Triple Peek Rake|0.020|sp_triplepeek|0|
+39|SP|Bomba Royale|R|Twin Peek Rake|0.020|sp_twinpeek|0|
+40|SP||T|Z Tensioner straight|0.130|sp_tensioner_str|0|
+41|SP||T|Z Tensioner straight|0.108|sp_tensioner_str|0|
+42|SP||T|Z Tensioner straight|0.094|sp_tensioner_str|0|
+43|SP||T|Z Tensioner twisted|0.130|sp_tensioner_twi|0|
+44|SP||T|Z Tensioner twisted|0.108|sp_tensioner_twi|0|
+45|SP||T|Z Tensioner twisted|0.094|sp_tensioner_twi|0|

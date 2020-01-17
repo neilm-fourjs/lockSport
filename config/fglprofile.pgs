@@ -1,5 +1,7 @@
 
 # PostgreSQL
+ls.dbname = "locksport"
+
 dbi.default.driver = "dbmpgs"
 
 dbi.database.locksport.ifxemul.datatype.serial.emulation = "native"
