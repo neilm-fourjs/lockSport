@@ -38,7 +38,6 @@ DEFINE m_pickhist_col DYNAMIC ARRAY OF RECORD
 	
 DEFINE m_save BOOLEAN = FALSE
 MAIN
-	DEFINE l_pickhist RECORD LIKE pick_hist.*
 	CALL db.connect()
 	CALL getData()
 
@@ -60,7 +59,7 @@ MAIN
 				LET int_flag = FALSE
 				INPUT BY NAME m_pickhist[ arr_curr() ].* ATTRIBUTES(WITHOUT DEFAULTS)
 				IF NOT int_flag THEN
-					UPDATE pick_hist SET pick_hist.* = l_pickhist.* WHERE pick_id = m_pickhist[ arr_curr() ].pick_id
+					UPDATE pick_hist SET pick_hist.* = m_pickhist[arr_curr()] .* WHERE pick_id = m_pickhist[ arr_curr() ].pick_id
 					CALL pick_history()
 				END IF
 		END DISPLAY
