@@ -10,28 +10,58 @@ DEFINE m_locks DYNAMIC ARRAY OF RECORD LIKE locks.*
 DEFINE m_pickTools DYNAMIC ARRAY OF RECORD LIKE tools.*
 DEFINE m_tensionTools DYNAMIC ARRAY OF RECORD LIKE tools.*
 DEFINE m_pickhist DYNAMIC ARRAY OF RECORD LIKE pick_hist.*
+TYPE t_pickhist_scr RECORD
+		pick_id 					INT,
+		lock_code 				INT,
+		tool_logo					STRING,
+		pick_tool_code 		INT,
+		tension_tool_code INT,
+		tension_method 		CHAR(1),
+		datetime_picked		DATETIME YEAR TO SECOND,
+		duration 					DATETIME HOUR TO SECOND,
+		notes 						VARCHAR(256),
+		attempts					SMALLINT
+	END RECORD
+DEFINE m_pickhist_scr DYNAMIC ARRAY OF t_pickhist_scr
+DEFINE m_pickhist_col DYNAMIC ARRAY OF RECORD
+		fld1 STRING,
+		fld2 STRING,
+		fld3 STRING,
+		fld4 STRING,
+		fld5 STRING,
+		fld6 STRING,
+		fld7 STRING,
+		fld8 STRING,
+		fld9 STRING,
+		fld10 STRING
+	END RECORD
+	
 DEFINE m_save BOOLEAN = FALSE
 MAIN
-
+	DEFINE l_pickhist RECORD LIKE pick_hist.*
 	CALL db.connect()
 	CALL getData()
 
 	OPEN FORM p FROM "pick"
 	DISPLAY FORM p
+	CALL ui.Interface.setImage("fa-unlock")
 	CALL fgl_setTitle( SFMT("Locksport DB: %1 : %2", db.m_dbName, db.m_dbVer ) )
 
-	CALL pick_history()
 	DIALOG ATTRIBUTES(UNBUFFERED)
-		DISPLAY ARRAY m_pickhist TO pickhist.*
+		DISPLAY ARRAY m_pickhist_scr TO pickhist.*
+			BEFORE DISPLAY
+				CALL pick_history()
 			BEFORE ROW
 				DISPLAY BY NAME m_pickhist[ arr_curr() ].*
+				DISPLAY m_pickhist_scr[ arr_curr() ].tool_logo TO tool_logo
 				DISPLAY tool_img( m_pickhist[ arr_curr() ].pick_tool_code ) TO tool_img
 				DISPLAY lock_img( m_pickhist[ arr_curr() ].lock_code ) TO lock_img
 			ON ACTION UPDATE
 				LET int_flag = FALSE
-				INPUT m_pickhist[ arr_curr() ].* FROM pickhist[ scr_line() ].* ATTRIBUTES(WITHOUT DEFAULTS)
+				INPUT BY NAME m_pickhist[ arr_curr() ].* ATTRIBUTES(WITHOUT DEFAULTS)
 				IF NOT int_flag THEN
-					UPDATE pick_hist SET pick_hist.* = m_pickhist[ arr_curr() ].* WHERE pick_id = m_pickhist[ arr_curr() ].pick_id
+					UPDATE pick_hist SET pick_hist.* = l_pickhist.* WHERE pick_id = m_pickhist[ arr_curr() ].pick_id
+					CALL pick_history()
 				END IF
 		END DISPLAY
 
@@ -70,7 +100,7 @@ FUNCTION getData()
 		LET m_locks[l_lock.lock_code].* = l_lock.*
 	END FOREACH
 
-	DECLARE c_cbtools CURSOR FOR SELECT * FROM tools ORDER BY tool_name, tool_width
+	DECLARE c_cbtools CURSOR FOR SELECT * FROM tools ORDER BY tool_name, tool_width, manu_code
 	FOREACH c_cbtools INTO l_tool.*
 		IF l_tool.tool_type = "T" THEN
 			LET l_row = m_tensionTools.getLength() + 1
@@ -80,9 +110,10 @@ FUNCTION getData()
 			LET m_pickTools[l_row].* = l_tool.*
 		END IF
 	END FOREACH
+	DISPLAY SFMT("Loaded: %1 Locks, %2 Picks, %3 Tension Tools", m_locks.getLength(), m_pickTools.getLength(), m_tensionTools.getLength())
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
-FUNCTION getManu(l_type CHAR(1), l_code CHAR(2))
+FUNCTION getManu(l_type CHAR(1), l_code CHAR(2)) RETURNS STRING
 	DEFINE x SMALLINT
 	FOR x = 1 TO m_manus.getLength()
 		IF l_type = m_manus[x].manu_type THEN
@@ -123,7 +154,7 @@ FUNCTION cb_tool( l_cb ui.ComboBox )
 	IF l_cb.getColumnName() = "pick_tool_code" OR l_cb.getColumnName() = "apick_tool_code" THEN
 		FOR l_row = 1 TO m_pickTools.getLength()
 			IF NOT m_pickTools[ l_row ].broken THEN
-				LET l_tool =  SFMT("%3 %1 (%2)",
+				LET l_tool =  SFMT("%1 (%2) %3",
 														m_pickTools[ l_row ].tool_name,
 														m_pickTools[ l_row ].tool_width,
 														getManu("T",m_pickTools[ l_row ].manu_code))
@@ -196,6 +227,8 @@ FUNCTION pick()
 
 		AFTER FIELD end_time
 			LET l_pick.duration = duration(end_time,l_pick.time_picked)
+		ON ACTION fail
+			LET l_pick.duration = "00:00:00"
 	END INPUT
 	IF NOT int_flag THEN
 		TRY
@@ -219,13 +252,47 @@ END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION pick_history()
 	DEFINE l_pick RECORD LIKE pick_hist.*
+	DEFINE l_dte DATETIME YEAR TO DAY
 	DEFINE l_row SMALLINT = 0
+	DEFINE l_tool_id SMALLINT
+	DEFINE l_d ui.Dialog
 	CALL m_pickhist.clear()
+	CALL m_pickhist_col.clear()
 	DECLARE c_pickhist CURSOR FOR SELECT * FROM pick_hist
 	FOREACH c_pickhist INTO l_pick.*
 		LET l_row = l_row + 1
+		LET m_pickhist_col[ l_row ].fld1 = "black"
 		LET m_pickhist[ l_row ].* = l_pick.*
+		IF l_pick.duration = "00:00:00" THEN
+			DISPLAY "Row:",l_row," Failed!"
+			LET m_pickhist_col[ l_row ].fld4 = "red"
+			LET m_pickhist_col[ l_row ].fld2 = "red"
+		END IF
+		
+		LET l_dte = l_pick.date_picked
+		LET m_pickhist_scr[ l_row ].datetime_picked = l_dte||" "||l_pick.time_picked
+		LET m_pickhist_scr[ l_row ].duration = l_pick.duration
+		LET m_pickhist_scr[ l_row ].notes = l_pick.notes
+		LET m_pickhist_scr[ l_row ].pick_tool_code = l_pick.pick_tool_code
+		LET m_pickhist_scr[ l_row ].tension_method = l_pick.tension_method
+		LET m_pickhist_scr[ l_row ].tension_tool_code = l_pick.tension_tool_code
+		LET m_pickhist_scr[ l_row ].lock_code = l_pick.lock_code
+		LET m_pickhist_scr[ l_row ].pick_id = l_pick.pick_id
+		LET m_pickhist_scr[ l_row ].attempts = l_pick.attempts
+		FOR l_tool_id = 1 TO m_pickTools.getLength()
+			IF l_pick.pick_tool_code = m_pickTools[ l_tool_id ].tool_code THEN EXIT FOR END IF
+		END FOR
+		DISPLAY "Row:",l_row," Manu:",m_pickTools[ l_tool_id ].manu_code, ":",m_pickhist_scr[ l_row ].datetime_picked
+		CASE m_pickTools[ l_tool_id ].manu_code
+			WHEN "SP" LET m_pickhist_scr[ l_row ].tool_logo = "sparrows_logo.png"
+			WHEN "DF" LET m_pickhist_scr[ l_row ].tool_logo = "dangerfield_logo.png"
+		END CASE
 	END FOREACH
+	LET l_d = ui.Dialog.getCurrent()
+	IF l_d IS NOT NULL THEN
+		DISPLAY "applying colours"
+		CALL l_d.setArrayAttributes("pickhist",m_pickhist_col)
+	END IF
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION show_locks()

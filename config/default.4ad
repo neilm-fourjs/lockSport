@@ -36,6 +36,7 @@
   <ActionDefault name="pick" text="Pick" image="fa-unlock-alt" acceleratorName="p" contextMenu="no"/>
   <ActionDefault name="list_tools" text="List Tools" image="fa-list" acceleratorName="t" contextMenu="no"/>
   <ActionDefault name="list_locks" text="List Locks" image="fa-list" acceleratorName="l" contextMenu="no"/>
+  <ActionDefault name="fail" text="Fail" image="fa-frown-o" acceleratorName="f" contextMenu="no"/>
 
   <ActionDefault name="now" validate="no" text="Now" image="fa-clock-o" acceleratorName="enter" contextMenu="no"/>
   <ActionDefault name="calc" validate="no" text="Calc" image="fa-calculator" acceleratorName="*" contextMenu="no"/>

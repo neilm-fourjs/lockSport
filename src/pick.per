@@ -4,6 +4,8 @@ TOOLBAR
 	ITEM accept
 	ITEM cancel
 	ITEM pick
+	ITEM update
+	ITEM fail
 	ITEM list_tools
 	ITEM list_locks
 	ITEM db_save
@@ -17,7 +19,7 @@ HBOX ( SPLITTER )
 GRID
 {
 [l001|f001                       ]
-[l002|f002                       ]
+[l002|f002                       |i]
 [l003|f003                       ]
 [l004|f004]
 [l005|f005      ]
@@ -34,16 +36,16 @@ END -- GRID
 END -- HBOX
 TABLE
 {
-[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a9|a008            ]
-[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a9|a008            ]
-[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a9|a008            ]
-[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a9|a008            ]
-[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a9|a008            ]
-[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a9|a008            ]
-[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a9|a008            ]
-[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a9|a008            ]
-[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a9|a008            ]
-[a001        |a002          |a003          |a004 |a005      |a006    |a007    |a9|a008            ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
 }
 END -- TABLE
 END -- VBOX
@@ -82,6 +84,7 @@ LABEL l010 : lab10, TEXT=%"Notes:";
 
 COMBOBOX f001 = FORMONLY.lock_code, INITIALIZER=cb_lock, STYLE="big", NOT NULL;
 COMBOBOX f002 = FORMONLY.pick_tool_code, INITIALIZER=cb_tool, STYLE="big", NOT NULL;
+IMAGE i = FORMONLY.tool_logo, AUTOSCALE, STYLE="noborder";
 COMBOBOX f003 = FORMONLY.tension_tool_code, INITIALIZER=cb_tool, NOT NULL;
 COMBOBOX f004 = FORMONLY.tension_method, ITEMS=(("T","TOK"),("B","BOK")), NOT NULL;
 DATEEDIT f005 = FORMONLY.date_picked, NOT NULL;
@@ -93,17 +96,17 @@ TEXTEDIT f010 = FORMONLY.notes;
 
 PHANTOM FORMONLY.pick_id;
 COMBOBOX a001 = FORMONLY.alock_code, INITIALIZER=cb_lock, TITLE=%"Lock";
+IMAGE l = FORMONLY.atool_logo, AUTOSCALE;
 COMBOBOX a002 = FORMONLY.apick_tool_code, INITIALIZER=cb_tool, TITLE=%"Pick";
 COMBOBOX a003 = FORMONLY.atension_tool_code, INITIALIZER=cb_tool, TITLE=%"Tensioner";
 COMBOBOX a004 = FORMONLY.atension_method, ITEMS=(("T","TOK"),("B","BOK")), TITLE=%"Tension" ;
-a005 = FORMONLY.adate_picked, TITLE=%"Date";
-a006 = FORMONLY.atime_picked, TITLE=%"Time";
-a007 = FORMONLY.aduration, TITLE=%"Duration";
-a008 = FORMONLY.anotes, TITLE=%"Notes";
-a9 = FORMONLY.aattempts, TITLE=%"Attempts";
+a005 = FORMONLY.adate_picked, TITLE=%"When";
+a006 = FORMONLY.aduration, TITLE=%"Duration";
+a007 = FORMONLY.anotes, TITLE=%"Notes";
+a8 = FORMONLY.aattempts, TITLE=%"Attempts";
 
-IMAGE timg = FORMONLY.tool_img, AUTOSCALE;
-IMAGE limg = FORMONLY.lock_img, AUTOSCALE;
+IMAGE timg = FORMONLY.tool_img, AUTOSCALE, STYLE="noborder";
+IMAGE limg = FORMONLY.lock_img, AUTOSCALE, STYLE="noborder";
 
 INSTRUCTIONS
 SCREEN RECORD pickhist ( FORMONLY.pick_id  THRU FORMONLY.aattempts )
