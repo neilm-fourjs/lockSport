@@ -71,6 +71,7 @@ MAIN
 		ON ACTION db_reset
 			IF fgl_winQuestion("Confirm","Are you sure?","No","Yes|No","question",0) = "Yes" THEN
 				CALL db.cre_db()
+				CALL getData()
 			END IF
 		ON ACTION db_save CALL db.save_db()
 
@@ -86,6 +87,11 @@ FUNCTION getData()
 	DEFINE l_lock RECORD LIKE locks.*
 	DEFINE l_tool RECORD LIKE tools.*
 	DEFINE l_row SMALLINT 
+
+	CALL m_manus.clear()
+	CALL m_locks.clear()
+	CALL m_tensionTools.clear()
+	CALL m_pickTools.clear()
 
 	LET l_row = 0
 	DECLARE c_menus CURSOR FOR SELECT * FROM manus
@@ -110,6 +116,8 @@ FUNCTION getData()
 		END IF
 	END FOREACH
 	DISPLAY SFMT("Loaded: %1 Locks, %2 Picks, %3 Tension Tools", m_locks.getLength(), m_pickTools.getLength(), m_tensionTools.getLength())
+
+	CALL pick_history()
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION getManu(l_type CHAR(1), l_code CHAR(2)) RETURNS STRING

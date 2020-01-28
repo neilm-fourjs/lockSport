@@ -37,9 +37,9 @@
 37|SP|Tuxedo Royale|R|Triple Peek Rake|0.015|sp_triplepeek|0|
 38|SP|Bomba Royale|R|Triple Peek Rake|0.020|sp_triplepeek|0|
 39|SP|Bomba Royale|R|Twin Peek Rake|0.020|sp_twinpeek|0|
-40|SP||T|Z Tensioner straight|0.130|sp_tensioner_str|0|
-41|SP||T|Z Tensioner straight|0.108|sp_tensioner_str|0|
-42|SP||T|Z Tensioner straight|0.094|sp_tensioner_str|0|
-43|SP||T|Z Tensioner twisted|0.130|sp_tensioner_twi|0|
-44|SP||T|Z Tensioner twisted|0.108|sp_tensioner_twi|0|
-45|SP||T|Z Tensioner twisted|0.094|sp_tensioner_twi|0|
+40|SP||T|Z Straight|0.130|sp_tensioner_str|0|
+41|SP||T|Z Straight|0.108|sp_tensioner_str|0|
+42|SP||T|Z Straight|0.094|sp_tensioner_str|0|
+43|SP||T|Z Twisted|0.130|sp_tensioner_twi|0|
+44|SP||T|Z Twisted|0.108|sp_tensioner_twi|0|
+45|SP||T|Z Twisted|0.094|sp_tensioner_twi|0|

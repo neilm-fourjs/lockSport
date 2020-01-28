@@ -8,6 +8,7 @@ CONSTANT C_DBPDIR = "../database"
 
 PUBLIC DEFINE m_dbname STRING
 PUBLIC DEFINE m_dbver SMALLINT
+PUBLIC DEFINE m_dbtype STRING
 
 DEFINE m_dbdir STRING
 FUNCTION connect()
@@ -18,7 +19,9 @@ FUNCTION connect()
 		CALL lib.error(SFMT("Connect failed: %1 %2", STATUS, SQLERRMESSAGE ))
 		EXIT PROGRAM
 	END TRY
+	LET m_dbtype = fgl_getResource("dbi.default.driver")
 	CALL chk_db()
+	CALL fix_serials()
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION chk_db()
@@ -274,4 +277,18 @@ FUNCTION save_db()
 	UNLOAD TO os.path.join(C_BACKUPDIR,"tools.unl") SELECT * FROM tools
 	UNLOAD TO os.path.join(C_BACKUPDIR,"locks.unl") SELECT * FROM locks
 END FUNCTION
-
+--------------------------------------------------------------------------------------------------------------
+FUNCTION fix_serials()
+	DEFINE l_id INTEGER
+  IF m_dbtype = "dbmpgs" THEN
+    TRY
+      SELECT MAX(pick_id) INTO l_id FROM pick_hist
+      IF l_id IS NULL THEN LET l_id = 0 END IF
+      LET l_id = l_id + 1
+      DISPLAY "Fixing serial for pick_hist:",l_id
+      EXECUTE IMMEDIATE "SELECT setval('pick_hist_pick_id_seq', "||l_id||")"
+    CATCH
+      CALL lib.error(SFMT("DB Error %1:%2", STATUS, SQLERRMESSAGE))
+    END TRY
+  END IF
+END FUNCTION
