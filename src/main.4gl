@@ -209,7 +209,8 @@ FUNCTION pick()
 	LET l_pick.attempts = 1
 
 	LET int_flag = FALSE
-	INPUT BY NAME l_pick.*, end_time ATTRIBUTES( UNBUFFERED, WITHOUT DEFAULTS )
+
+	INPUT BY NAME l_pick.*, end_time ATTRIBUTES(UNBUFFERED, WITHOUT DEFAULTS )
 		ON CHANGE lock_code
 				DISPLAY lock_img( l_pick.lock_code ) TO lock_img
 
@@ -236,7 +237,17 @@ FUNCTION pick()
 			LET l_pick.duration = duration(end_time,l_pick.time_picked)
 		ON ACTION fail
 			LET l_pick.duration = "00:00:00"
+		ON ACTION sample
+			IF sample() THEN
+				DISPLAY "Sample:", arr_curr()
+				LET l_pick.pick_id = m_pickhist_scr[ arr_curr() ].pick_id
+				LET l_pick.lock_code = m_pickhist_scr[ arr_curr() ].lock_code
+				LET l_pick.pick_tool_code = m_pickhist_scr[ arr_curr() ].pick_tool_code
+				LET l_pick.tension_tool_code  = m_pickhist_scr[ arr_curr() ].tension_tool_code
+				LET l_pick.tension_method =  m_pickhist_scr[ arr_curr() ].tension_method
+			END IF
 	END INPUT
+
 	IF NOT int_flag THEN
 		TRY
 			INSERT INTO pick_hist VALUES  l_pick.*
@@ -247,6 +258,13 @@ FUNCTION pick()
 		CALL pick_history()
 	END IF
 
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+FUNCTION sample() RETURNS BOOLEAN
+	LET int_flag = FALSE
+	DISPLAY ARRAY m_pickhist_scr TO pickhist.*
+	IF int_flag THEN LET int_flag = FALSE RETURN FALSE END IF
+	RETURN TRUE
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION duration(l_ed DATETIME HOUR TO SECOND, l_st DATETIME HOUR TO SECOND)

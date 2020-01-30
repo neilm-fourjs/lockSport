@@ -6,6 +6,7 @@ TOOLBAR
 	ITEM pick
 	ITEM update
 	ITEM fail
+	ITEM sample
 	ITEM list_tools
 	ITEM list_locks
 	ITEM db_save
@@ -82,6 +83,7 @@ LABEL l008 : lab8, TEXT=%"Duration:", JUSTIFY=RIGHT;
 LABEL l009 : lab9, TEXT=%"Attempts:", JUSTIFY=RIGHT;
 LABEL l010 : lab10, TEXT=%"Notes:";
 
+PHANTOM FORMONLY.pick_id;
 COMBOBOX f001 = FORMONLY.lock_code, INITIALIZER=cb_lock, STYLE="big", NOT NULL;
 COMBOBOX f002 = FORMONLY.pick_tool_code, INITIALIZER=cb_tool, STYLE="big", NOT NULL;
 IMAGE i = FORMONLY.tool_logo, AUTOSCALE, STYLE="noborder";
@@ -94,7 +96,8 @@ BUTTONEDIT f008 = FORMONLY.duration, ACTION=calc, STYLE="big", NOT NULL;
 BUTTONEDIT f9 = FORMONLY.attempts, ACTION=plus, STYLE="big", NOT NULL;
 TEXTEDIT f010 = FORMONLY.notes;
 
-PHANTOM FORMONLY.pick_id;
+-- Table
+PHANTOM FORMONLY.apick_id;
 COMBOBOX a001 = FORMONLY.alock_code, INITIALIZER=cb_lock, TITLE=%"Lock";
 IMAGE l = FORMONLY.atool_logo, AUTOSCALE;
 COMBOBOX a002 = FORMONLY.apick_tool_code, INITIALIZER=cb_tool, TITLE=%"Pick";
@@ -109,4 +112,4 @@ IMAGE timg = FORMONLY.tool_img, AUTOSCALE, STYLE="noborder";
 IMAGE limg = FORMONLY.lock_img, AUTOSCALE, STYLE="noborder";
 
 INSTRUCTIONS
-SCREEN RECORD pickhist ( FORMONLY.pick_id  THRU FORMONLY.aattempts )
+SCREEN RECORD pickhist ( FORMONLY.apick_id  THRU FORMONLY.aattempts )
