@@ -219,24 +219,42 @@ FUNCTION pick()
 
 		BEFORE FIELD time_picked
 			LET l_pick.time_picked = TIME
+			LET end_time = NULL
+			LET l_pick.duration = NULL
 
 		ON ACTION now INFIELD time_picked
 			LET l_pick.time_picked = TIME
 			NEXT FIELD end_time
+
 		ON ACTION now INFIELD end_time
 			LET end_time = TIME
 			LET l_pick.duration = duration(end_time,l_pick.time_picked)
 			NEXT FIELD notes
 
+		ON IDLE 5
+			IF l_pick.time_picked IS NOT NULL THEN
+				LET end_time = TIME
+				LET l_pick.duration = duration(end_time,l_pick.time_picked)
+				LET end_time = NULL
+			END IF
+
 		ON ACTION calc
 			LET l_pick.duration = duration(end_time,l_pick.time_picked)
+
 		ON ACTION plus
 			LET l_pick.attempts = l_pick.attempts + 1
 
 		AFTER FIELD end_time
 			LET l_pick.duration = duration(end_time,l_pick.time_picked)
+
 		ON ACTION fail
+			LET end_time = TIME
+			LET l_pick.duration = duration(end_time,l_pick.time_picked)
+			LET l_pick.notes = l_pick.duration
+			LET end_time = NULL
 			LET l_pick.duration = "00:00:00"
+			NEXT FIELD notes
+
 		ON ACTION sample
 			IF sample() THEN
 				DISPLAY "Sample:", arr_curr()
