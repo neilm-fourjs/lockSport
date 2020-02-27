@@ -10,7 +10,10 @@ TOOLBAR
 	ITEM list_tools
 	ITEM list_locks
 	ITEM db_save
-	ITEM db_reset 
+	ITEM db_reset
+	ITEM session_new
+	ITEM session_start
+	ITEM lock_pref
 END -- TOOLBAR
 
 LAYOUT (TEXT="lockSport", STYLE="main2")
@@ -31,22 +34,22 @@ GRID
 [l006|f006    ][l010]
 [l007|f007    ][f010                            ]
 [l008|f008    ][                                ]
-[l009|f9]      [                                ]
+[l009|f9]  [a9][                                ]
 }
 END -- GRID
 END -- HBOX
 TABLE
 {
-[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
-[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
-[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
-[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
-[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
-[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
-[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
-[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
-[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
-[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007            ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007           ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007           ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007           ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007           ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007           ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007           ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007           ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007           ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007           ]
+[a001        |l|a002          |a003          |a004 |a005      |a006    |a8|a007           ]
 }
 END -- TABLE
 END -- VBOX
@@ -95,7 +98,7 @@ BUTTONEDIT f007 = FORMONLY.end_time, ACTION=now, STYLE="big", NOT NULL;
 BUTTONEDIT f008 = FORMONLY.duration, ACTION=calc, STYLE="big", NOT NULL;
 BUTTONEDIT f9 = FORMONLY.attempts, ACTION=plus, STYLE="big", NOT NULL;
 TEXTEDIT f010 = FORMONLY.notes;
-
+a9 = FORMONLY.session_id;
 -- Table
 PHANTOM FORMONLY.apick_id;
 COMBOBOX a001 = FORMONLY.alock_code, INITIALIZER=cb_lock, TITLE=%"Lock";

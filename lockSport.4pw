@@ -85,7 +85,7 @@
       <Directory description="Web Components" destinationDirectory="$(RootDir)/webcomponents" label="Webcomponents" sourceDirectory="$(ProjectDir)/webcomponents"/>
     </Package>
   </Group>
-  <Group environment="filelist:FGLPROFILE=$(ProjectDir)/config/fglprofile.sqt,dirlist:DBPATH=$(ProjectDir)/database;$(DBPATH)" id="10414220" label="Project" language="Genero">
+  <Group environment="filelist:FGLPROFILE=$(ProjectDir)/config/fglprofile.pgs,dirlist:DBPATH=$(ProjectDir)/database;$(DBPATH)" id="10414220" label="Project" language="Genero">
     <Library binaryName="Config" id="362164715" label="Config">
       <File filePath="config/default.4ad"/>
       <File filePath="config/default.4st"/>
@@ -99,6 +99,7 @@
     <Application binaryName="lockSport" dependencies="159917928,212784684,362164715,455109296" environment="dirlist:FGLIMAGEPATH=$(ProjectDir)/images;$(FGLDIR)/lib/image2font.txt;$(ProjectDir);$(FGLIMAGEPATH)" id="400358049" label="lockSport">
       <File filePath="src/db.4gl"/>
       <File filePath="src/lib.4gl"/>
+      <File filePath="src/lock_pref.per"/>
       <File filePath="src/locks.per"/>
       <File filePath="src/main.4gl"/>
       <File filePath="src/pick.per"/>

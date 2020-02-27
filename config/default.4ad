@@ -38,7 +38,9 @@
   <ActionDefault name="list_locks" text="Locks List" image="fa-list" acceleratorName="l" contextMenu="no"/>
   <ActionDefault name="fail" text="Fail" image="fa-frown-o" acceleratorName="f12" contextMenu="no"/>
   <ActionDefault name="sample" validate="no" text="Sample" image="fa-check" acceleratorName="f11" contextMenu="no"/>
-
+  <ActionDefault name="session_start" validate="no" text="Session Start" comment="Start a picking session" image="fa-clock-o" contextMenu="no"/>
+  <ActionDefault name="session_new" validate="no" text="New Session" comment="Create a new picking session" image="fa-clock-o" contextMenu="no"/>
+  <ActionDefault name="lock_pref" validate="no" text="Lock Prefs" comment="Define tool preferences for a locks" image="fa-key" contextMenu="no"/>
   <ActionDefault name="now" validate="no" text="Now" image="fa-clock-o" acceleratorName="enter" contextMenu="no"/>
   <ActionDefault name="calc" validate="no" text="Calc" image="fa-calculator" acceleratorName="*" contextMenu="no"/>
   <ActionDefault name="plus" validate="no" text="Plus" image="fa-plus" acceleratorName="+" contextMenu="no"/>

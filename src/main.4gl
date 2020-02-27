@@ -67,7 +67,7 @@ MAIN
 		ON ACTION pick CALL pick()
 		ON ACTION list_tools CALL show_tools()
 		ON ACTION list_locks CALL show_locks()
-
+		ON ACTION lock_pref CALL lock_pref()
 		ON ACTION db_reset
 			IF fgl_winQuestion("Confirm","Are you sure?","No","Yes|No","question",0) = "Yes" THEN
 				CALL db.cre_db()
@@ -361,4 +361,24 @@ FUNCTION show_tools()
 			DISPLAY "../pics/"||l_tools[ arr_curr() ].tool_img||".jpg" TO img
 	END DISPLAY
 	CLOSE WINDOW tools
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+FUNCTION lock_pref()
+	DEFINE l_lock_code INTEGER
+	DEFINE l_lockPref DYNAMIC ARRAY OF RECORD LIKE lock_picks.*
+	OPEN WINDOW lock_pref WITH FORM "lock_pref"
+	DIALOG ATTRIBUTES(UNBUFFERED)
+		INPUT BY NAME l_lock_code
+			ON CHANGE l_lock_code
+				CALL l_lockPref.clear()
+				DECLARE lp_cur CURSOR FOR SELECT * FROM lock_picks WHERE lock_code = l_lock_code
+				FOREACH lp_cur INTO l_lockPref[ l_lockPref.getLength() + 1 ].*
+				END FOREACH
+				CALL l_lockPref.deleteElement(l_lockPref.getLength())
+		END INPUT
+		DISPLAY ARRAY l_lockPref TO lock_prefs.*
+		END DISPLAY
+		ON ACTION close EXIT DIALOG
+	END DIALOG
+	CLOSE WINDOW lock_pref
 END FUNCTION
