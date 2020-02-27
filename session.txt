@@ -1,0 +1,42 @@
+
+Idea is a lock picking sessions
+a list of locks
+	each one with a preset list of picks a select of tensioners ( 2 )
+
+Then when you start a session, you select the pick click start
+then pick that lock, when you finish with the lock you click 'picked' or 'failed' and it moves to the next lock
+another option will be to end the session.
+session ends when 'end session' is click or all locks in the session have been picked/failed
+
+Requires:
+toolbar with start / end / create options
+form to show the session as a table of lock / picks / buttons
+[lock    |tensioner|pick   |time |picked|failed]
+
+Also requires a way to define the most common picks used with each lock.
+
+
+Need a maint screen to setup this data:
+Tables:
+lock_picks
+	lock_code
+	tensioner_code
+	pick_code
+
+
+session_template:
+	session_code
+	session_desc
+	lock_code
+	tensioner_code
+	pick_code
+
+session:
+	session_id	
+	session_code
+	session_date
+	session_start	
+	session_end
+
+Alter pick_history
+add session_id

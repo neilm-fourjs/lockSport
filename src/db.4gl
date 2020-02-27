@@ -2,7 +2,7 @@ IMPORT os
 
 IMPORT FGL lib
 
-CONSTANT C_DBVER = 2
+CONSTANT C_DBVER = 3
 CONSTANT C_BACKUPDIR = "../../ls_backup"
 CONSTANT C_DBPDIR = "../database"
 
@@ -76,20 +76,61 @@ FUNCTION drop_db()
 	CALL dropTab( "manus" )
 	CALL dropTab( "pick_hist" )
 	CALL dropTab( "dbver" )
+	CALL dropTab( "lock_picks" )
+	CALL dropTab( "session_template" )
+	CALL dropTab( "sessions" )
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
 FUNCTION upd_db() RETURNS BOOLEAN
 	DEFINE l_stmt STRING
-	LET l_stmt = "ALTER TABLE pick_hist ADD COLUMN attempts SMALLINT"
-	TRY
-		EXECUTE IMMEDIATE l_stmt
-		UPDATE pick_hist SET attempts = 1
-		LET m_dbver = m_dbver + 1
-	CATCH
-		CALL lib.error( SFMT("upd_db: %1 \nfailed: %2 %3",l_stmt,STATUS,SQLERRMESSAGE))
-		RETURN FALSE
-	END TRY
-	UPDATE dbver SET dbver = m_dbver
+	IF m_dbver = 1 THEN
+		DISPLAY "Updating DB ..."
+		LET l_stmt = "ALTER TABLE pick_hist ADD COLUMN attempts SMALLINT"
+		TRY
+			EXECUTE IMMEDIATE l_stmt
+			UPDATE pick_hist SET attempts = 1
+			UPDATE dbver SET dbver = 2
+			LET m_dbver = 2
+		CATCH
+			CALL lib.error( SFMT("upd_db: %1 \nfailed: %2 %3",l_stmt,STATUS,SQLERRMESSAGE))
+			RETURN FALSE
+		END TRY
+	END IF
+	IF m_dbver = 2 THEN
+		DISPLAY "Updating DB ..."
+		LET l_stmt = "ALTER TABLE pick_hist ADD COLUMN session_id INTEGER"
+		TRY
+			EXECUTE IMMEDIATE l_stmt
+			LET m_dbver = 3
+		CATCH
+			CALL lib.error( SFMT("upd_db: %1 \nfailed: %2 %3",l_stmt,STATUS,SQLERRMESSAGE))
+			RETURN FALSE
+		END TRY
+		DISPLAY "Updating DB Create Table lock_picks ..."
+		CREATE TABLE lock_picks ( 
+			lock_code INTEGER,
+			tensioner_code INTEGER,
+			pick_code INTEGER,
+			fav BOOLEAN
+		)
+		DISPLAY "Updating DB Create Table session_template ..."
+		CREATE TABLE session_template (
+			session_code SERIAL,
+			session_desc VARCHAR(30),
+			lock_code INTEGER,
+			tensioner_code INTEGER,
+			pick_code INTEGER
+		)
+		DISPLAY "Updating DB Create Table sessions ..."
+		CREATE TABLE sessions (
+			session_id SERIAL,
+			session_code INTEGER,
+			session_date DATE,
+			started DATETIME HOUR TO SECOND,
+			finished DATETIME HOUR TO SECOND
+		)
+		UPDATE dbver SET dbver = 3
+	END IF
 
 	RETURN TRUE
 END FUNCTION

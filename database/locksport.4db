@@ -16,6 +16,12 @@
   <Table active="true" name="dbver" status="U" uuid="db/table2">
     <Column fglLength="2" fglType="1" name="dbver" notNull="false" order="1" status="U" uuid="db/column2"/>
   </Table>
+  <Table active="true" name="lock_picks" status="U" uuid="db/table9">
+    <Column fglLength="4" fglType="2" name="lock_code" notNull="false" order="1" status="U" uuid="db/column50"/>
+    <Column fglLength="4" fglType="2" name="tensioner_code" notNull="false" order="2" status="U" uuid="db/column51"/>
+    <Column fglLength="4" fglType="2" name="pick_code" notNull="false" order="3" status="U" uuid="db/column53"/>
+    <Column fglLength="1" fglType="45" name="fav" notNull="false" order="4" status="U" uuid="db/column55"/>
+  </Table>
   <Table active="true" name="locks" status="U" uuid="db/table6">
     <Column fglLength="4" fglType="6" name="lock_code" notNull="false" order="1" status="U" uuid="db/column8"/>
     <Column fglLength="2" fglType="0" name="manu_code" notNull="false" order="2" status="U" uuid="db/column10"/>
@@ -50,7 +56,24 @@
     <Column fglLength="1642" fglType="10" name="duration" notNull="false" order="8" status="U" uuid="db/column45"/>
     <Column fglLength="256" fglType="201" name="notes" notNull="false" order="9" status="U" uuid="db/column36"/>
     <Column fglLength="2" fglType="1" name="attempts" notNull="false" order="10" status="U" uuid="db/column49"/>
+    <Column fglLength="4" fglType="2" name="session_id" notNull="false" order="11" status="U" uuid="db/column57"/>
     <Index indexColumns="pick_id" indexConstraint="primaryKey" name="primary_key_pick_hist" status="U" uuid="db/index3"/>
+  </Table>
+  <Table active="true" name="session_template" status="U" uuid="db/table10">
+    <Column fglLength="4" fglType="6" name="session_code" notNull="false" order="1" status="U" uuid="db/column59"/>
+    <Column fglLength="30" fglType="201" name="session_desc" notNull="false" order="2" status="U" uuid="db/column61"/>
+    <Column fglLength="4" fglType="2" name="lock_code" notNull="false" order="3" status="U" uuid="db/column63"/>
+    <Column fglLength="4" fglType="2" name="tensioner_code" notNull="false" order="4" status="U" uuid="db/column64"/>
+    <Column fglLength="4" fglType="2" name="pick_code" notNull="false" order="5" status="U" uuid="db/column65"/>
+    <Index indexColumns="session_code" indexConstraint="primaryKey" name="primary_key_session_template" status="U" uuid="db/index5"/>
+  </Table>
+  <Table active="true" name="sessions" status="U" uuid="db/table11">
+    <Column fglLength="4" fglType="6" name="session_id" notNull="false" order="1" status="U" uuid="db/column66"/>
+    <Column fglLength="4" fglType="2" name="session_code" notNull="false" order="2" status="U" uuid="db/column67"/>
+    <Column fglLength="4" fglType="7" name="session_date" notNull="false" order="3" status="U" uuid="db/column68"/>
+    <Column fglLength="1642" fglType="10" name="started" notNull="false" order="4" status="U" uuid="db/column69"/>
+    <Column fglLength="1642" fglType="10" name="finished" notNull="false" order="5" status="U" uuid="db/column70"/>
+    <Index indexColumns="session_id" indexConstraint="primaryKey" name="primary_key_sessions" status="U" uuid="db/index6"/>
   </Table>
   <Table active="true" name="tools" status="U" uuid="db/table12">
     <Column fglLength="4" fglType="6" name="tool_code" notNull="false" order="1" status="U" uuid="db/column52"/>
@@ -66,7 +89,7 @@
   <Views ActiveView="View-1" showLabels="true">
     <View Name="View-1">
       <Layout>
-        <![CDATA[AAAAAgAAABIAZABiAC8AdABhAGIAbABlADIAAAAAAAAAAEAy0tLXh4eIAAAAAAAAAAABAAAAFABkAGIALwB0AGEAYgBsAGUAMQAyQH4PDxbfDw9ARLS0uelpaj+Yk3S8an7+AQAAABIAZABiAC8AdABhAGIAbABlADdAe2lpa1PDxEBzh4eJMeHiP6Jul41P3z8BAAAAEgBkAGIALwB0AGEAYgBsAGUANj/+Hh4/Dw8RQGMtLTP2lpc/o3S8an753wEAAAASAGQAYgAvAHQAYQBiAGwAZQA4AAAAAAAAAAAAAAAAAAAAAD+gYk3S8an/AQ==]]>
+        <![CDATA[AAAAAgAAABIAZABiAC8AdABhAGIAbABlADhABpaWmAAAAEBzlpaX0AAAP641P3ztkW8BAAAAFABkAGIALwB0AGEAYgBsAGUAMQAxwBLS0tQAAABAevDw8qAAAD+vO2RaHKwPAQAAABIAZABiAC8AdABhAGIAbABlADkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAEgBkAGIALwB0AGEAYgBsAGUANkCMcPDyyHh4QDDw8ShLS08/qJN0vGp+/wEAAAASAGQAYgAvAHQAYQBiAGwAZQAyAAAAAAAAAABAMtLS2LS0tQAAAAAAAAAAAQAAABQAZABiAC8AdABhAGIAbABlADEAMkB5eHiB4AAAQCw8PFLS0tQ/p41P3ztkXwEAAAAUAGQAYgAvAHQAYQBiAGwAZQAxADDAJLS0tgAAAEBilpaXwAAAP60vGp++ds8BAAAAEgBkAGIALwB0AGEAYgBsAGUAN0B1S0tOilpaQHC0tLdqWlo/qZmZmZmZnwE=]]>
       </Layout>
     </View>
   </Views>
