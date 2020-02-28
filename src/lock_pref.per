@@ -1,0 +1,23 @@
+
+LAYOUT (TEXT="Lock Preference")
+GRID
+{
+Lock:[f001                     ]
+<T tab                                                  >
+ [a001                     |a002                     |f]
+ [a001                     |a002                     |f]
+ [a001                     |a002                     |f]
+ [a001                     |a002                     |f]
+}
+END -- GRID
+
+ATTRIBUTES
+COMBOBOX f001 = FORMONLY.l_lock_code, INITIALIZER=cb_lock, NOT NULL;
+
+PHANTOM FORMONLY.lock_code;
+COMBOBOX a001 = FORMONLY.atension_tool_code, INITIALIZER=cb_tool;
+COMBOBOX a002 = FORMONLY.apick_tool_code, INITIALIZER=cb_tool, NOT NULL;
+CHECKBOX f = FORMONLY.fav, VALUECHECKED=1, VALUEUNCHECKED=0, NOT NULL;
+
+INSTRUCTIONS
+SCREEN RECORD lock_prefs ( FORMONLY.lock_code THRU FORMONLY.fav)

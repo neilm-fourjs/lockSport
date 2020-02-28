@@ -366,18 +366,62 @@ END FUNCTION
 FUNCTION lock_pref()
 	DEFINE l_lock_code INTEGER
 	DEFINE l_lockPref DYNAMIC ARRAY OF RECORD LIKE lock_picks.*
+	DEFINE x SMALLINT
+	DEFINE l_saved, l_add BOOLEAN
 	OPEN WINDOW lock_pref WITH FORM "lock_pref"
+	DELETE FROM lock_picks WHERE lock_code IS NULL
+	LET l_lock_code = 1
+	DECLARE lp_cur CURSOR FOR SELECT * FROM lock_picks WHERE lock_code = ?
+	FOREACH lp_cur USING l_lock_code INTO l_lockPref[ l_lockPref.getLength() + 1 ].*
+	END FOREACH
+	CALL l_lockPref.deleteElement(l_lockPref.getLength())
+	MESSAGE "Found ",l_lockPref.getLength()," preferences for this lock."
 	DIALOG ATTRIBUTES(UNBUFFERED)
-		INPUT BY NAME l_lock_code
+		INPUT BY NAME l_lock_code ATTRIBUTES(WITHOUT DEFAULTS)
 			ON CHANGE l_lock_code
 				CALL l_lockPref.clear()
-				DECLARE lp_cur CURSOR FOR SELECT * FROM lock_picks WHERE lock_code = l_lock_code
-				FOREACH lp_cur INTO l_lockPref[ l_lockPref.getLength() + 1 ].*
+				FOREACH lp_cur USING l_lock_code INTO l_lockPref[ l_lockPref.getLength() + 1 ].*
 				END FOREACH
 				CALL l_lockPref.deleteElement(l_lockPref.getLength())
+				MESSAGE "Found ",l_lockPref.getLength()," preferences for this lock."
+			ON ACTION plus
+				LET l_add = TRUE
+				NEXT FIELD atension_tool_code
 		END INPUT
 		DISPLAY ARRAY l_lockPref TO lock_prefs.*
+			BEFORE DISPLAY
+				IF l_add THEN
+					CALL l_lockPref.appendElement()
+					LET x = l_lockPref.getLength()
+					LET l_lockPref[x].lock_code = l_lock_code
+					LET l_lockPref[x].fav = FALSE
+					INPUT l_lockPref[x].* FROM lock_prefs[x].* ATTRIBUTES(WITHOUT DEFAULTS);
+					LET l_add = FALSE
+				END IF
+			ON APPEND
+				LET l_lockPref[arr_curr()].lock_code = l_lock_code
+				LET l_lockPref[arr_curr()].fav = FALSE
+				INPUT l_lockPref[arr_curr()].* FROM lock_prefs[scr_line()].* ATTRIBUTES(WITHOUT DEFAULTS);
+			ON UPDATE
+				INPUT l_lockPref[arr_curr()].* FROM lock_prefs[scr_line()].* ATTRIBUTES(WITHOUT DEFAULTS);
+			ON DELETE
+				MESSAGE "item deleted"
+			ON ACTION back NEXT FIELD l_lock_code
+			AFTER DISPLAY
+				LET l_saved = FALSE
+				IF fgl_winQuestion("Confirm","Save changes?","Yes","Yes|No","question",0) = "Yes" THEN
+					DELETE FROM lock_picks WHERE lock_code = l_lock_code
+					FOR x = 1 TO l_lockPref.getLength()
+						IF l_lockPref[x].pick_code IS NOT NULL THEN
+							MESSAGE "Saved"
+							LET l_saved = TRUE
+							INSERT INTO lock_picks VALUES( l_lockPref[x].* )
+						END IF
+					END FOR
+				END IF
+				MESSAGE IIF(l_saved,"Saved","Not Saved")
 		END DISPLAY
+		ON ACTION back EXIT DIALOG
 		ON ACTION close EXIT DIALOG
 	END DIALOG
 	CLOSE WINDOW lock_pref
