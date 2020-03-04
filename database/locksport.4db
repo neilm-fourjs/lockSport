@@ -59,12 +59,15 @@
     <Column fglLength="4" fglType="2" name="session_id" notNull="false" order="11" status="U" uuid="db/column57"/>
     <Index indexColumns="pick_id" indexConstraint="primaryKey" name="primary_key_pick_hist" status="U" uuid="db/index3"/>
   </Table>
+  <Table active="true" name="session_locks" status="U" uuid="db/table13">
+    <Column fglLength="4" fglType="2" name="session_code" notNull="false" order="1" status="U" uuid="db/column71"/>
+    <Column fglLength="4" fglType="2" name="lock_code" notNull="false" order="2" status="U" uuid="db/column72"/>
+    <Column fglLength="4" fglType="2" name="tensioner_code" notNull="false" order="3" status="U" uuid="db/column73"/>
+    <Column fglLength="4" fglType="2" name="pick_code" notNull="false" order="4" status="U" uuid="db/column74"/>
+  </Table>
   <Table active="true" name="session_template" status="U" uuid="db/table10">
     <Column fglLength="4" fglType="6" name="session_code" notNull="false" order="1" status="U" uuid="db/column59"/>
     <Column fglLength="30" fglType="201" name="session_desc" notNull="false" order="2" status="U" uuid="db/column61"/>
-    <Column fglLength="4" fglType="2" name="lock_code" notNull="false" order="3" status="U" uuid="db/column63"/>
-    <Column fglLength="4" fglType="2" name="tensioner_code" notNull="false" order="4" status="U" uuid="db/column64"/>
-    <Column fglLength="4" fglType="2" name="pick_code" notNull="false" order="5" status="U" uuid="db/column65"/>
     <Index indexColumns="session_code" indexConstraint="primaryKey" name="primary_key_session_template" status="U" uuid="db/index5"/>
   </Table>
   <Table active="true" name="sessions" status="U" uuid="db/table11">
@@ -89,7 +92,7 @@
   <Views ActiveView="View-1" showLabels="true">
     <View Name="View-1">
       <Layout>
-        <![CDATA[AAAAAgAAABIAZABiAC8AdABhAGIAbABlADhABpaWmAAAAEBzlpaX0AAAP641P3ztkW8BAAAAFABkAGIALwB0AGEAYgBsAGUAMQAxwBLS0tQAAABAevDw8qAAAD+vO2RaHKwPAQAAABIAZABiAC8AdABhAGIAbABlADkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAEgBkAGIALwB0AGEAYgBsAGUANkCMcPDyyHh4QDDw8ShLS08/qJN0vGp+/wEAAAASAGQAYgAvAHQAYQBiAGwAZQAyAAAAAAAAAABAMtLS2LS0tQAAAAAAAAAAAQAAABQAZABiAC8AdABhAGIAbABlADEAMkB5eHiB4AAAQCw8PFLS0tQ/p41P3ztkXwEAAAAUAGQAYgAvAHQAYQBiAGwAZQAxADDAJLS0tgAAAEBilpaXwAAAP60vGp++ds8BAAAAEgBkAGIALwB0AGEAYgBsAGUAN0B1S0tOilpaQHC0tLdqWlo/qZmZmZmZnwE=]]>
+        <![CDATA[AAAAAgAAABIAZABiAC8AdABhAGIAbABlADhAEtLS1LS0tUByeHh62WlpP7AgxJul41cBAAAAEgBkAGIALwB0AGEAYgBsAGUAMgAAAAAAAAAAQDLS0tnh4eIAAAAAAAAAAAEAAAAUAGQAYgAvAHQAYQBiAGwAZQAxADHAEtLS1S0tLUB68PD0Tw8PP687ZFocrA8BAAAAFABkAGIALwB0AGEAYgBsAGUAMQAyQHl4eIN3h4hALDw8VJaWmT+njU/fO2RfAQAAABIAZABiAC8AdABhAGIAbABlADZAjHDw9I+HiEAw8PEpWlpiP6iTdLxqfv8BAAAAEgBkAGIALwB0AGEAYgBsAGUAOQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAUAGQAYgAvAHQAYQBiAGwAZQAxADMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAFABkAGIALwB0AGEAYgBsAGUAMQAwQCS0tLS0tLVAZPDw82lpaT+wo9cKPXCnAQAAABIAZABiAC8AdABhAGIAbABlADdAdUtLT98PD0BwtLS4daWmP6mZmZmZmZ8B]]>
       </Layout>
     </View>
   </Views>

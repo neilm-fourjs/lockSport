@@ -1,0 +1,30 @@
+
+LAYOUT (TEXT="Pick Session")
+GRID
+{
+Session Key:[f001                               ]
+Description:[f002                               ]
+<T tab                                                                                 >
+ [a001                     |a002                     |a003              |time|b1|b2|b3]
+ [a001                     |a002                     |a003              |time|b1|b2|b3]
+ [a001                     |a002                     |a003              |time|b1|b2|b3]
+ [a001                     |a002                     |a003              |time|b1|b2|b3]
+ [a001                     |a002                     |a003              |time|b1|b2|b3]
+}
+END -- GRID
+
+ATTRIBUTES
+
+COMBOBOX f001 = FORMONLY.l_code, INITIALIZER=cb_sess, NOT NULL;
+f002 = FORMONLY.l_desc, NOT NULL;
+
+COMBOBOX a001 = FORMONLY.lock_code, INITIALIZER=cb_lock, NOT NULL, TITLE="Lock";
+COMBOBOX a002 = FORMONLY.tension_tool_code, INITIALIZER=cb_tool, NOT NULL, TITLE="Tensioner";
+COMBOBOX a003 = FORMONLY.pick_tool_code, INITIALIZER=cb_tool, NOT NULL, TITLE="Pick";
+time = FORMONLY.time, NOENTRY;
+IMAGE b1 = FORMONLY.b1, TITLE="Go/Pause";
+IMAGE b2 = FORMONLY.b2, TITLE="Open";
+IMAGE b3 = FORMONLY.b3, TITLE="Fail";
+
+INSTRUCTIONS
+SCREEN RECORD arr ( FORMONLY.lock_code THRU FORMONLY.b3 )

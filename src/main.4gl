@@ -1,5 +1,6 @@
 
 IMPORT os
+IMPORT util
 IMPORT FGL db
 IMPORT FGL lib
 
@@ -68,6 +69,8 @@ MAIN
 		ON ACTION list_tools CALL show_tools()
 		ON ACTION list_locks CALL show_locks()
 		ON ACTION lock_pref CALL lock_pref()
+		ON ACTION session_maint CALL picking_session(TRUE) -- session template maint
+		ON ACTION session_start CALL picking_session(FALSE) -- start a session
 		ON ACTION db_reset
 			IF fgl_winQuestion("Confirm","Are you sure?","No","Yes|No","question",0) = "Yes" THEN
 				CALL db.cre_db()
@@ -369,6 +372,7 @@ FUNCTION lock_pref()
 	DEFINE x SMALLINT
 	DEFINE l_saved, l_add BOOLEAN
 	OPEN WINDOW lock_pref WITH FORM "lock_pref"
+	LET int_flag = FALSE
 	DELETE FROM lock_picks WHERE lock_code IS NULL
 	LET l_lock_code = 1
 	DECLARE lp_cur CURSOR FOR SELECT * FROM lock_picks WHERE lock_code = ?
@@ -425,4 +429,167 @@ FUNCTION lock_pref()
 		ON ACTION close EXIT DIALOG
 	END DIALOG
 	CLOSE WINDOW lock_pref
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+-- l_maint = create new/update session template
+FUNCTION cb_sess( l_cb ui.ComboBox )
+	DEFINE l_session RECORD LIKE session_template.*
+	DECLARE cb_sess CURSOR FOR SELECT * FROM session_template
+	FOREACH cb_sess INTO l_session.*
+		CALL l_cb.addItem(l_session.session_code, l_session.session_desc CLIPPED)
+	END FOREACH
+END FUNCTION
+--------------------------------------------------------------------------------------------------------------
+-- l_maint = create new/update session template
+FUNCTION picking_session( l_maint BOOLEAN )
+	DEFINE l_code LIKE session_template.session_code
+	DEFINE l_desc LIKE session_template.session_desc
+	DEFINE l_session RECORD LIKE session_template.*
+	DEFINE l_sess_locks RECORD LIKE session_locks.*
+	DEFINE l_sess DYNAMIC ARRAY OF RECORD
+		lock_code INTEGER,
+		tensioner_code INTEGER,
+		pick_code INTEGER,
+		time DATETIME HOUR TO SECOND,
+		b1 STRING,
+		b2 STRING,
+		b3 STRING
+	END RECORD
+	DEFINE l_func CHAR(1)
+	DEFINE l_sttime DATETIME HOUR TO SECOND
+	DEFINE x, y SMALLINT
+	OPEN WINDOW session WITH FORM "session"
+	LET int_flag = FALSE
+	IF l_maint THEN
+		SELECT COUNT(*) INTO x FROM session_template
+		IF x = 0 THEN
+			LET l_func = "N"
+		ELSE
+			LET l_func = "U"
+		END IF
+	ELSE
+		LET l_func = "S" -- start session
+	END IF
+
+	IF l_func = "N" THEN
+		INPUT BY NAME l_desc
+	ELSE
+		INPUT BY NAME l_code
+			AFTER INPUT
+				IF NOT int_flag THEN
+					SELECT * INTO l_session.* FROM session_template WHERE session_code = l_code
+					IF STATUS = NOTFOUND THEN
+						NEXT FIELD l_code
+					END IF
+				END IF
+			ON ACTION plus
+				LET l_func = "N"
+				INPUT BY NAME l_desc
+				IF NOT int_flag THEN EXIT INPUT END IF
+			ON ACTION delall
+				DELETE FROM session_template
+				DELETE FROM session_locks
+		END INPUT
+	END IF
+	IF int_flag THEN
+		CLOSE WINDOW session
+		RETURN
+	END IF
+
+	IF l_func != "N" THEN
+		DECLARE cur_sess CURSOR FOR SELECT * FROM session_locks WHERE session_code = l_code
+		FOREACH cur_sess INTO l_sess_locks.*
+			IF l_sess_locks.lock_code IS NOT NULL THEN
+				LET x = l_sess.getLength() + 1
+				LET l_sess[x].lock_code = l_sess_locks.lock_code
+				LET l_sess[x].pick_code = l_sess_locks.pick_code
+				LET l_sess[x].tensioner_code = l_sess_locks.tensioner_code
+				LET l_sess[x].b1 = "fa-play"
+				LET l_sess[x].b2 = "fa-thumbs-o-up"
+				LET l_sess[x].b3 = "fa-thumbs-o-down"
+			END IF
+		END FOREACH
+	END IF
+	IF l_func = "D" THEN
+		DELETE FROM session_template WHERE session_code = l_code
+		DELETE FROM session_locks WHERE session_code = l_code
+		CLOSE WINDOW session
+		RETURN
+	END IF
+
+	IF l_func != "S" THEN
+		INPUT ARRAY l_sess FROM arr.* ATTRIBUTES(WITHOUT DEFAULTS)
+-- save
+		IF NOT int_flag AND l_sess.getLength() > 0 THEN
+			IF l_func = "U" THEN
+				DELETE FROM session_locks WHERE session_code = l_code
+			ELSE
+				LET l_session.session_code = NULL
+				LET l_session.session_desc = l_desc
+				INSERT INTO session_template VALUES l_session.*
+				LET l_session.session_code = SQLCA.sqlerrd[2]
+			END IF
+			FOR x = 1 TO l_sess.getLength()
+				LET l_sess_locks.session_code = l_session.session_code
+				LET l_sess_locks.lock_code = l_sess[x].lock_code
+				LET l_sess_locks.tensioner_code = l_sess[x].tensioner_code
+				LET l_sess_locks.pick_code = l_sess[x].pick_code
+				INSERT INTO session_locks VALUES l_sess_locks.*
+			END FOR
+		END IF
+		CLOSE WINDOW session
+		RETURN
+	END IF
+
+	DISPLAY ARRAY l_sess TO arr.* ATTRIBUTES(FOCUSONFIELD, UNBUFFERED)
+		BEFORE ROW
+			DISPLAY "Before Row:", arr_curr()
+			LET x = arr_curr()
+			LET y = scr_line()
+			LET l_sttime = NULL
+			NEXT FIELD time
+
+		BEFORE FIELD b1
+			IF l_sess[ x ].b1 = "fa-pause" THEN
+				LET l_sess[ x ].b1 = "fa-play"
+			ELSE
+				LET l_sess[ x ].b1 = "fa-pause"
+				LET l_sttime = TIME
+			END IF
+			DISPLAY TIME,")In b1 :",x, ":", l_sess[ x ].b1,  " Time:", l_sess[ x ].time
+			NEXT FIELD time
+
+		BEFORE FIELD b2
+			LET l_sess[ x ].b2 = "fa-thumbs-up"
+			LET l_sess[ x ].time = duration( TIME, l_sttime)
+			DISPLAY TIME,")In b2 :",x, ":", l_sess[ x ].b2,  " Time:", l_sess[ x ].time
+			IF x < l_sess.getLength() THEN
+				LET x = x + 1
+				CALL fgl_set_arr_curr(x)
+				--CALL DIALOG.setCurrentRow("arr",x+1)
+				--NEXT FIELD time
+			ELSE
+				EXIT DISPLAY
+			END IF
+
+		BEFORE FIELD b3
+			LET l_sess[ x ].b3 = "fa-thumbs-down"
+			LET l_sess[ x ].time = duration( TIME, l_sttime)
+			DISPLAY TIME,")In b3 :",x, ":", l_sess[ x ].b3,  " Time:", l_sess[ x ].time
+			IF x < l_sess.getLength() THEN
+				LET x = x + 1
+				CALL fgl_set_arr_curr(x)
+				--CALL DIALOG.setCurrentRow("arr",x+1)
+				--NEXT FIELD time
+			ELSE
+				EXIT DISPLAY
+			END IF
+
+		ON IDLE 2
+			IF l_sttime IS NOT NULL THEN
+				LET l_sess[ x ].time = duration( TIME, l_sttime)
+			END IF
+	END DISPLAY
+
+	CLOSE WINDOW session
 END FUNCTION

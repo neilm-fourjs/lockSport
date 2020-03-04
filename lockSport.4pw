@@ -104,6 +104,7 @@
       <File filePath="src/main.4gl"/>
       <File filePath="src/pick.per"/>
       <File filePath="src/pickhist.per"/>
+      <File filePath="src/session.per"/>
       <File filePath="src/tools.per"/>
     </Application>
   </Group>

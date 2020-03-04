@@ -2,7 +2,7 @@ IMPORT os
 
 IMPORT FGL lib
 
-CONSTANT C_DBVER = 3
+CONSTANT C_DBVER = 4
 CONSTANT C_BACKUPDIR = "../../ls_backup"
 CONSTANT C_DBPDIR = "../database"
 
@@ -78,6 +78,7 @@ FUNCTION drop_db()
 	CALL dropTab( "dbver" )
 	CALL dropTab( "lock_picks" )
 	CALL dropTab( "session_template" )
+	CALL dropTab( "session_locks" )
 	CALL dropTab( "sessions" )
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
@@ -101,7 +102,6 @@ FUNCTION upd_db() RETURNS BOOLEAN
 		LET l_stmt = "ALTER TABLE pick_hist ADD COLUMN session_id INTEGER"
 		TRY
 			EXECUTE IMMEDIATE l_stmt
-			LET m_dbver = 3
 		CATCH
 			CALL lib.error( SFMT("upd_db: %1 \nfailed: %2 %3",l_stmt,STATUS,SQLERRMESSAGE))
 			RETURN FALSE
@@ -130,8 +130,25 @@ FUNCTION upd_db() RETURNS BOOLEAN
 			finished DATETIME HOUR TO SECOND
 		)
 		UPDATE dbver SET dbver = 3
+		LET m_dbver = 3
 	END IF
-
+	IF m_dbver = 3 THEN
+		CALL dropTab("session_template")
+		DISPLAY "Updating DB Create Table session_template ..."
+		CREATE TABLE session_template (
+			session_code SERIAL,
+			session_desc VARCHAR(30)
+		)
+		DISPLAY "Updating DB Create Table session_locks ..."
+		CREATE TABLE session_locks (
+			session_code INTEGER,
+			lock_code INTEGER,
+			tensioner_code INTEGER,
+			pick_code INTEGER
+		)
+		UPDATE dbver SET dbver = 4
+		LET m_dbver = 4
+	END IF
 	RETURN TRUE
 END FUNCTION
 --------------------------------------------------------------------------------------------------------------
